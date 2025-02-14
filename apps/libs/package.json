@@ -1,0 +1,20 @@
+{
+  "name": "@it3k-2025-backend/libs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "module": "./dist/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

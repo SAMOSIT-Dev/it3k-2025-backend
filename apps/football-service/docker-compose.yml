@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  football-service:
+    build:
+      context: ../../
+      dockerfile: apps/football-service/Dockerfile
+    ports:
+      - "8084:8084"
+    volumes:
+      - ../../apps:/app/apps
+      - ../../jest.preset.js:/app/jest.preset.js
+      - ../../eslint.config.cjs:/app/eslint.config.cjs
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=admin_db
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=admin_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql_data:
+
+networks:
+  default:
+    driver: bridge

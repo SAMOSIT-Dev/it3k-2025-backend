@@ -1,0 +1,17 @@
+{
+  "name": "pingpong-service-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["pingpong-service"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/pingpong-service-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["pingpong-service:build"]
+    }
+  }
+}

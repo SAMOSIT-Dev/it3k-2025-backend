@@ -1,0 +1,17 @@
+{
+  "name": "basketball-service-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["basketball-service"],
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
+      "options": {
+        "jestConfig": "apps/basketball-service-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["basketball-service:build"]
+    }
+  }
+}

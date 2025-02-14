@@ -1,0 +1,54 @@
+{
+  "name": "pingpong-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/pingpong-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "pingpong-service:build",
+        "runBuildTargetDependencies": false,
+        "watch": true,
+        "port": 8085,
+        "inspect": "inspect"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "pingpong-service:build:development"
+        },
+        "production": {
+          "buildTarget": "pingpong-service:build:production"
+        },
+        "docker" : {
+          "buildTarget": "pingpong-service:build:development",
+          "port": 8085,
+          "inspect" : false
+        }
+      }
+    },
+    "serve-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon",
+        "cwd": "apps/pingpong-service",
+        "args": [
+          "--watch",
+          "src",
+          "--ext",
+          "ts,json",
+          "--exec",
+          "ts-node --project tsconfig.app.json src/main.ts"
+        ]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}

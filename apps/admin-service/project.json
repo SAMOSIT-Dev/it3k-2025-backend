@@ -3,15 +3,16 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/admin-service/src",
   "projectType": "application",
-  "tags": [],
   "targets": {
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
       "options": {
         "buildTarget": "admin-service:build",
-        "runBuildTargetDependencies": false
+        "watch": true,
+        "runBuildTargetDependencies": false,
+        "port": 8080,
+        "inspect": "inspect"
       },
       "configurations": {
         "development": {
@@ -19,7 +20,27 @@
         },
         "production": {
           "buildTarget": "admin-service:build:production"
+        },
+        "docker" : {
+          "buildTarget": "admin-service:build:development",
+          "port": 8080,
+          "inspect" : false
         }
+      }
+    },
+    "serve-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon",
+        "cwd": "apps/admin-service",
+        "args": [
+          "--watch",
+          "src",
+          "--ext",
+          "ts,json",
+          "--exec",
+          "ts-node --project tsconfig.app.json src/main.ts"
+        ]
       }
     },
     "test": {

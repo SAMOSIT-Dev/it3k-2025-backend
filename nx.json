@@ -35,7 +35,21 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/admin-service-e2e/**/*"]
+      "exclude": [
+        "apps/admin-service-e2e/**/*",
+        "apps/badminton-service-e2e/**/*",
+        "apps/pingpong-service-e2e/**/*",
+        "apps/athletics-service-e2e/**/*",
+        "apps/football-service-e2e/**/*",
+        "apps/basketball-service-e2e/**/*"
+      ]
     }
-  ]
+  ],
+  "targetDefaults": {
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    }
+  }
 }
