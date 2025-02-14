@@ -1,70 +1,98 @@
-# It3k2025Backend
+# It3k-2025-Backend
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/express?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-
-## Finish your CI setup
-
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/DT5SAoA3gH)
-
-
-## Run tasks
-
-To run the dev server for your app, use:
-
+## Installing NX Command-CLI
 ```sh
-npx nx serve admin-service
+npm add --global nx@latest
 ```
 
-To create a production bundle:
+## Installing Application (Service)
 
+before install service, go to ```apps``` folder.
 ```sh
-npx nx build admin-service
+nx g @nx/express:application <service_name>
 ```
 
-To see all available targets to run for a project, run:
-
+## Installing Library (Share with others service)
+To generate a new library (use once):
 ```sh
-npx nx show project admin-service
+nx g @nx/node:lib libs or
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
+## Building Tasks
+To build a single task:
 ```sh
-npx nx g @nx/express:app demo
+nx build <service_name>
+```
+To build a single taks wiht configuration:
+```sh
+nx build <service_name> --prod 
+```
+To build multiple tasks:
+```sh
+nx run-many -t build -p <service_1>,<service_2>
+```
+To build all tasks:
+```sh
+nx run-many -t build
 ```
 
-To generate a new library, use:
+## Running Tasks (Hot-Reloading)
 
+To run a single task:
 ```sh
-npx nx g @nx/node:lib mylib
+nx serve <service_name>
+```
+To run multiple tasks:
+```sh
+nx run-many -t serve -p <service_1>,<service_2>
+```
+To run a single task with port specification:
+```sh
+nx run-many -t serve -p <service_1>,<service_2>
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Showing Tasks
+To see all available targets to run for a project:
+```sh
+nx show project <service_name>
+```
+To show all services:
+```sh
+nx show projects
+```
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Testing Tasks
+To test a single task:
+```sh
+nx test <service_name>
+```
+To test a single task with watch mode:
+```sh
+nx test <service_name> -w
+```
+To test a single task with coverage:
+```sh
+nx test <service_name> --coverage
+```
+To test mutiple tasks:
+```sh
+nx run-many -t test -p <service_1>,<service_2>
+```
+To test all tasks:
+```sh
+nx run-all -t test
+```
+To build and test multiple tasks:
+```sh
+nx run-many -t build test -p <service_1>,<service_2>
+```
+To build and test all tasks:
+```sh
+nx run-many -t build test
+```
 
 ## Useful links
 
@@ -74,9 +102,3 @@ Learn more:
 - [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
