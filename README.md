@@ -26,7 +26,7 @@ To build all tasks:
 nx run-many -t build
 ```
 
-## Running Tasks (Hot-Reloading)
+## Running Tasks
 
 To run a single task:
 ```sh

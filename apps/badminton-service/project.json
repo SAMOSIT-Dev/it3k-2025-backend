@@ -5,6 +5,16 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/badminton-service",
+        "main": "apps/badminton-service/src/main.ts",
+        "tsConfig": "apps/badminton-service/tsconfig.app.json",
+        "assets": ["apps/badminton-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -13,7 +23,6 @@
         "buildTarget": "badminton-service:build",
         "runBuildTargetDependencies": false,
         "watch": true,
-        "port": 8082,
         "inspect": "inspect"
       },
       "configurations": {

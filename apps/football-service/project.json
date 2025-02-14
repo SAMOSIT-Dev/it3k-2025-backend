@@ -5,6 +5,16 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/football-service",
+        "main": "apps/football-service/src/main.ts",
+        "tsConfig": "apps/football-service/tsconfig.app.json",
+        "assets": ["apps/football-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -13,7 +23,6 @@
         "buildTarget": "football-service:build",
         "runBuildTargetDependencies": false,
         "watch": true,
-        "port": 8084,
         "inspect": "inspect"
       },
       "configurations": {

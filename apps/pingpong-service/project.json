@@ -5,6 +5,16 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/pingpong-service",
+        "main": "apps/pingpong-service/src/main.ts",
+        "tsConfig": "apps/pingpong-service/tsconfig.app.json",
+        "assets": ["apps/pingpong-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -13,7 +23,6 @@
         "buildTarget": "pingpong-service:build",
         "runBuildTargetDependencies": false,
         "watch": true,
-        "port": 8085,
         "inspect": "inspect"
       },
       "configurations": {

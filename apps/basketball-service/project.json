@@ -5,6 +5,16 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/basketball-service",
+        "main": "apps/basketball-service/src/main.ts",
+        "tsConfig": "apps/basketball-service/tsconfig.app.json",
+        "assets": ["apps/basketball-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -13,7 +23,6 @@
         "buildTarget": "basketball-service:build",
         "runBuildTargetDependencies": false,
         "watch": true,
-        "port": 8083,
         "inspect": "inspect"
       },
       "configurations": {

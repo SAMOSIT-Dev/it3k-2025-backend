@@ -5,6 +5,16 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/athletics-service",
+        "main": "apps/athletics-service/src/main.ts",
+        "tsConfig": "apps/athletics-service/tsconfig.app.json",
+        "assets": ["apps/athletics-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -13,7 +23,6 @@
         "buildTarget": "athletics-service:build",
         "runBuildTargetDependencies": false,
         "watch": true,
-        "port": 8081,
         "inspect": "inspect"
       },
       "configurations": {

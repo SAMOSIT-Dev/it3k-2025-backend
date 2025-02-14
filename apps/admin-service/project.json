@@ -4,6 +4,16 @@
   "sourceRoot": "apps/admin-service/src",
   "projectType": "application",
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/admin-service",
+        "main": "apps/admin-service/src/main.ts",
+        "tsConfig": "apps/admin-service/tsconfig.app.json",
+        "assets": ["apps/admin-service/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
@@ -11,7 +21,6 @@
         "buildTarget": "admin-service:build",
         "watch": true,
         "runBuildTargetDependencies": false,
-        "port": 8080,
         "inspect": "inspect"
       },
       "configurations": {
