@@ -28,16 +28,43 @@
     ├── service-name-e2e
     └── libs
 ```
-- app : application configuration & APIs entry points.
-- controllers : handle requests and responses with functions.
-- routes : defines the API endpoints.
-- middleware (optional) : up to service.
-- database : connect to database and get database instance.
-- model : storing types for using in a service, e.g. database model, req model, res model, and so on.
-- utils : utility functions.
-- logs (optional) : if need to log APIs requrests and response
-- main.ts : run server
+- app: application configuration & APIs entry points.
+- controllers: handle requests and responses with functions.
+- routes: defines the API endpoints.
+- middleware (optional): up to service.
+- database: connect to database and get database instance.
+- model: storing types for using in a service, e.g. database model, req model, res model, and so on.
+- utils: utility functions.
+- logs (optional): if need to log requests and responses.
+- main.ts: run server.
 
+## Running Service
+```sh
+npm run dev:service-name
+```
+1. dev:admin
+2. dev:football
+3. dev:basketball
+4. dev:badminton
+5. dev:pingpong
+6. dev:athletics
+
+## Start With MySQL On Docker
+Go to apps/service-name, start build and run container:
+```sh
+docker compose build mysql && docker compose up mysql
+```
+Or run with unless log:
+```sh
+docker compose build mysql && docker compose up -d mysql
+```
+Then you can go to MySQL Workbench and connect database in container:
+- host: localhost or 127.0.0.1
+- username: root
+- port: 3307
+- password: password
+
+## With NX
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
 
