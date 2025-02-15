@@ -86,3 +86,42 @@ Learn more:
 - [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+
+## Project Structures Example
+```sh
+.
+└── apps/
+    ├── service-name/
+    │   ├── assets
+    │   └── src/
+    │       ├── app/
+    │       │   └── app.ts
+    │       ├── controllers/
+    │       │   └── example.controller.ts
+    │       ├── routes/
+    │       │   └── example.route.ts
+    │       ├── middlewares/
+    │       │   └── example.middleware.ts
+    │       ├── database /
+    │       │   └── dabase.ts
+    │       ├── model/
+    │       │   ├── example1.model.ts
+    │       │   └── example2.model.ts
+    │       ├── utils/
+    │       │   └── utils.ts
+    │       ├── logs /
+    │       │   └── logs.log
+    │       └── main.ts
+    ├── service-name-e2e
+    └── libs
+```
+- app : application configuration & APIs entry points.
+- controllers : handle requests and responses with functions.
+- routes : defines the API endpoints.
+- middleware (optional) : up to service.
+- database : connect to database and get database instance.
+- model : storing types for using in a service, e.g. database model, req model, res model, and so on.
+- utils : utility functions.
+- logs (optional) : if need to log APIs requrests and response
+- main.ts : run server
