@@ -17,7 +17,7 @@ services:
       - DB_HOST=mysql
       - DB_USER=root
       - DB_PASSWORD=password
-      - DB_NAME=admin_db
+      - DB_NAME=it3k-2025
       - DB_PORT=3306
     depends_on:
       mysql:
@@ -30,7 +30,7 @@ services:
       - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=admin_db
+      - MYSQL_DATABASE=it3k-2025
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
