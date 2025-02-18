@@ -64,6 +64,16 @@ Then you can go to MySQL Workbench and connect database in container:
 - port: 3307
 - password: password
 
+## Set APIs name
+Start with /api:
+```sh
+/api/?
+```
+Every services must have 1 API for checking connection (response anything):
+```sh
+/api/health
+```
+
 ## With NX
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 

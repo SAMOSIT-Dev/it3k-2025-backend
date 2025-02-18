@@ -41,7 +41,8 @@
         "apps/pingpong-service-e2e/**/*",
         "apps/athletics-service-e2e/**/*",
         "apps/football-service-e2e/**/*",
-        "apps/basketball-service-e2e/**/*"
+        "apps/basketball-service-e2e/**/*",
+        "apps/gateway-e2e/**/*"
       ]
     }
   ],
