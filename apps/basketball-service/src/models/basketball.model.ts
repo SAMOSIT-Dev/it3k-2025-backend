@@ -9,7 +9,8 @@ export interface Match {
   team_A_id: number;
   team_B_id: number;
   status: MatchStatus;
-  time: string;
+  timeStart: string;
+  timeEnd: string;
   locationId: number;
   score_A_Q1: number;
   score_A_Q2: number;
@@ -19,16 +20,11 @@ export interface Match {
   score_B_OT: number;
 }
 
-export interface Scoreboard {
+export interface Schedule {
   id: number;
   team_A_id: number;
   team_B_id: number;
   status: MatchStatus;
-  time: string;
-  score_A_Q1: number;
-  score_A_Q2: number;
-  score_B_Q1: number;
-  score_B_Q2: number;
-  score_A_OT: number;
-  score_B_OT: number;
+  timeStart: string;
+  timeEnd: string;
 }
