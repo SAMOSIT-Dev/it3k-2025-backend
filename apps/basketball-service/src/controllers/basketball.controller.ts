@@ -25,15 +25,3 @@ export const getScoreboard = async (_req: Request, res: Response) => {
     });
   }
 };
-
-export const testDbConnection = async (req: Request, res: Response) => {
-  try {
-    const [rows] = await pool.query('SELECT 1 + 1 AS result');
-    res.json({ message: 'Database connection successful', data: rows });
-  } catch (error) {
-    console.error('Database connection error:', error);
-    res
-      .status(500)
-      .json({ message: 'Database connection failed', error: error.message });
-  }
-};
