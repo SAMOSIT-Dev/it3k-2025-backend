@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ../../
+      dockerfile: apps/gateway/Dockerfile
+    ports:
+      - "8099:8099"
+    volumes:
+      - ../../apps:/app/apps
+      - ../../jest.preset.js:/app/jest.preset.js
+      - ../../eslint.config.cjs:/app/eslint.config.cjs
+      - /app/node_modules
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge

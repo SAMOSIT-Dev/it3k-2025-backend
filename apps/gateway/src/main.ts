@@ -1,10 +1,4 @@
-import express from 'express';
-import * as path from 'path';
-
-const app = express();
-
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
+import app from "./app/app";
 
 const port = process.env.PORT || 8099;
 const server = app.listen(port, () => {
