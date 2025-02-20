@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import express from 'express';
 import * as path from 'path';
 import mysql from 'mysql2/promise';
@@ -39,18 +40,21 @@ app.get('/api/db-test', async (req, res) => {
 app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to basketball-service!' });
 });
+=======
+import app from './app/app';
+>>>>>>> a93d1c48fa13851d8c1db150351da34bdd1db9a7
 
 const port = process.env.PORT || 8083;
 const server = app.listen(port, () => {
-  console.log(`basketball-service Listening at http://localhost:${port}`);
+  console.log(`basketball-service listening at http://localhost:${port}`);
 });
+
 server.on('error', console.error);
 
-// Graceful shutdown
+// Graceful Shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM signal received: closing HTTP server');
   server.close(() => {
     console.log('HTTP server closed');
-    pool.end();
   });
 });
