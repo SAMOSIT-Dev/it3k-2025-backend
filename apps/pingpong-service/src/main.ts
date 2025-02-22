@@ -1,6 +1,7 @@
 import express from 'express';
 import * as path from 'path';
 import mysql from 'mysql2/promise';
+import {HealthCheckResponse, Status} from "@it3k-2025-backend/shared"
 
 const app = express();
 
@@ -36,8 +37,9 @@ app.get('/api/db-test', async (req, res) => {
   }
 });
 
-app.get('/api/check', (req, res) => {
-  res.send({ message: 'Welcome to pingpong-service!', is_connected: true });
+app.get('/health', (req, res) => {
+  const response: HealthCheckResponse = { message: 'Welcome to pingpong-service!', is_connected: true, timeStamp: new Date().toISOString(), status: Status.UP }
+  res.send(response);
 });
 
 const port = process.env.PORT || 8085;

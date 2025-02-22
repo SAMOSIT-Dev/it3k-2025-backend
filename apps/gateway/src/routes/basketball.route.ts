@@ -2,6 +2,6 @@ import { Router } from "express";
 import { checkBasketballConnection } from "../controllers/basketball.controller";
 
 const router = Router();
-router.get('/check', checkBasketballConnection)
+router.get('/health', checkBasketballConnection)
 
 export default router;
