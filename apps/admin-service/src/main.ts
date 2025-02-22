@@ -36,8 +36,8 @@ app.get('/api/db-test', async (req, res) => {
   }
 });
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to admin-service!' });
+app.get('/api/check', (req, res) => {
+  res.send({ message: 'Welcome to admin-service!', is_connected: true });
 });
 
 const port = process.env.PORT || 8080;

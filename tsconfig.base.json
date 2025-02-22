@@ -15,8 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@it3k-2025-backend/libs": ["apps/libs/src/index.ts"]
+      "@it3k-2025-backend/libs": ["apps/libs/src/index.ts"],
+      "@it3k-2025-backend/shared/models": ["apps/shared/models/index.model.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
 }
+

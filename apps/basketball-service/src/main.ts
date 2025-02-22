@@ -1,48 +1,4 @@
-<<<<<<< HEAD
-import express from 'express';
-import * as path from 'path';
-import mysql from 'mysql2/promise';
-
-const app = express();
-
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-// Create MySQL connection pool
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_NAME || 'it3k-2025',
-  port: Number(process.env.DB_PORT) || 3307,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-// Test database connection endpoint
-app.get('/api/db-test', async (req, res) => {
-  try {
-    // Simple query to test connection
-    const [rows] = await pool.query('SELECT 1 + 1 AS result');
-    res.json({
-      message: 'Database connection successful',
-      data: rows
-    });
-  } catch (error) {
-    console.error('Database connection error:', error);
-    res.status(500).json({
-      message: 'Database connection failed',
-      error: error.message
-    });
-  }
-});
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to basketball-service!' });
-});
-=======
 import app from './app/app';
->>>>>>> a93d1c48fa13851d8c1db150351da34bdd1db9a7
 
 const port = process.env.PORT || 8083;
 const server = app.listen(port, () => {

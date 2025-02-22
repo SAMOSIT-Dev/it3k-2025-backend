@@ -8,13 +8,16 @@ import basketballRouter from '../routes/basketball.route'
 import pingpongRouter from '../routes/pingpong.route' 
 
 const app = express();
-app.use('/api/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/api/admin', adminRouter);
-app.use('/api/athletics', athleticsRouter);
-app.use('/api/football', footballRouter);
-app.use('/api/badminton', badmintonRouter);
-app.use('/api/basketball', basketballRouter);
-app.use('/api/pingpong', pingpongRouter);
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/admin', adminRouter);
+app.use('/athletics', athleticsRouter);
+app.use('/football', footballRouter);
+app.use('/badminton', badmintonRouter);
+app.use('/basketball', basketballRouter);
+app.use('/pingpong', pingpongRouter);
+app.get('/gateway/check', (req, res) => {
+    res.status(200).json({ message: 'Gateway is alive' });
+})
 
 
 export default app;
