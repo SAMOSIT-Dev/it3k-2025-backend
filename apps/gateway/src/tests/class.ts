@@ -12,7 +12,7 @@ export class HealthService {
     async checkGatewayHealth(): Promise<HealthCheckResponse> {
         try {
             const response: AxiosResponse<HealthCheckResponse> = await axios.get(
-                `${this.baseUrl}/check`  // Use /check endpoint
+                `${this.baseUrl}/health`
             );
             return response.data;
         } catch (error) {
