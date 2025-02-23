@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Response } from 'express';
 import * as path from 'path';
 import adminRouter from '../routes/admin.route' 
 import athleticsRouter from '../routes/athletics.route' 
@@ -16,7 +16,7 @@ app.use('/football', footballRouter);
 app.use('/badminton', badmintonRouter);
 app.use('/basketball', basketballRouter);
 app.use('/pingpong', pingpongRouter);
-app.get('/health', (req, res) => {
+app.get('/health', (req, res : Response) => {
     const response: HealthCheckResponse = {
         status: Status.UP,
         message: 'Gateway is running',
