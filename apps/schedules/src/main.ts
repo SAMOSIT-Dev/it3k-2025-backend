@@ -1,21 +1,17 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import app from "./app/app";
+import { closePool } from './database/database';
 
-import express from 'express';
-import * as path from 'path';
-
-const app = express();
-
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to schedules!' });
+process.on('SIGINT', async () => {
+  try {
+    await closePool();
+    process.exit(0);
+  } catch (error) {
+    console.error('Error during graceful shutdown:', error);
+    process.exit(1);
+  }
 });
-
-const port = process.env.PORT || 3333;
+const port = process.env.PORT || 8090;
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  console.log(`Schedule service Listening at http://localhost:${port}`);
 });
 server.on('error', console.error);

@@ -9,7 +9,8 @@
     "dev:basketball": "nx run basketball-service:serve-dev",
     "dev:badminton": "nx run badminton-service:serve-dev",
     "dev:pingpong": "nx run pingpong-service:serve-dev",
-    "dev:gateway": "nx run gateway:serve-dev"
+    "dev:gateway": "nx run gateway:serve-dev",
+    "dev:schedule": "nx run schedules:serve-dev"
   },
   "private": true,
   "dependencies": {
