@@ -1,5 +1,4 @@
 import express, { Response } from 'express';
-import * as path from 'path';
 import adminRouter from '../routes/admin.route' 
 import athleticsRouter from '../routes/athletics.route' 
 import footballRouter from '../routes/football.route' 
@@ -9,7 +8,6 @@ import pingpongRouter from '../routes/pingpong.route'
 import { HealthCheckResponse, Status } from '@it3k-2025-backend/shared';
 
 const app = express();
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/admin', adminRouter);
 app.use('/athletics', athleticsRouter);
 app.use('/football', footballRouter);
