@@ -63,27 +63,12 @@ Then you can go to MySQL Workbench and connect database in container:
 - username: root
 - port: 3307
 - password: password
+- db_name : it3k-2025
 
 ## Set APIs name
 Start with /api:
 ```sh
 /api/<name>
-```
-Every services must have 1 API for checking connection ( /api/health ):
-```javascript
-import { HealthCheckResponse, Status } from '@it3k-2025-backend/shared';
-import { Response } from "express";
-
-// localhost:9999/health
-app.get('/health', (req, res : Response) => {
-    const response: HealthCheckResponse = {
-        status: Status.UP,
-        message: 'Service Example is running on port 9999',
-        is_connected: true,
-        timeStamp: new Date().toISOString()
-    }
-    res.status(200).json(response);
-})
 ```
 
 ## With NX
