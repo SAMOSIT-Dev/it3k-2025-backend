@@ -33,6 +33,7 @@ services:
       - MYSQL_DATABASE=it3k-2025
     volumes:
       - mysql_data:/var/lib/mysql
+      - ../../mock/db:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
