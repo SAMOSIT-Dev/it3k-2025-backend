@@ -11,7 +11,8 @@ describe('Sports Services Health Check Tests', () => {
         badminton: { port: '8082', app: express(), server: null },
         basketball: { port: '8083', app: express(), server: null },
         football: { port: '8084', app: express(), server: null },
-        pingpong: { port: '8085', app: express(), server: null }
+        pingpong: { port: '8085', app: express(), server: null },
+        popcat: { port: '3000', app: express(), server: null }
     };
 
     // HealthService instances
@@ -121,6 +122,17 @@ describe('Sports Services Health Check Tests', () => {
 
                 expect(response.body.status).toBe(Status.UP);
                 expect(response.body.message).toContain('Pingpong');
+            });
+        });
+
+        describe('Pop Cat Service', () => {
+            it('should return UP status when service is healthy', async () => {
+                const response = await request(services.popcat.app)
+                    .get('/health')
+                    .expect(200);
+
+                expect(response.body.status).toBe(Status.UP);
+                expect(response.body.message).toContain('Popcat');
             });
         });
     });
