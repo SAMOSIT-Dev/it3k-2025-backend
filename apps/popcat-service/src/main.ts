@@ -9,7 +9,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.ORIGINS || "*",
+        origin: process.env.ALLOWED_ORIGINS || "*",
     },
 });
 const PORT = process.env.PORT || 3000;
