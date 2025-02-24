@@ -1,7 +1,7 @@
-import app from './app/app';
+import { server } from './app/app';
 
 const port = process.env.PORT || 8083;
-const server = app.listen(port, () => {
+server.listen(port, () => {
   console.log(`basketball-service listening at http://localhost:${port}`);
 });
 

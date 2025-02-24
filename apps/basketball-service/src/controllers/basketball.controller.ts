@@ -1,49 +1,60 @@
 import { Request, Response } from 'express';
 import pool from '../databases/database';
-import { Match, Schedule } from '../models/basketball.model';
+import { Match, BasketballMatchRow } from '../models/basketball.model';
+import { formatTime } from '../../../../libs/shared/src/index'
 
 export const getScoreboard = async (_req: Request, res: Response) => {
   try {
-    const [matches]: any = await pool.query(
-      `SELECT id, team_A_id, team_B_id, status, timeStart, timeEnd,  
-              score_A_Q1, score_A_Q2, score_B_Q1, score_B_Q2, 
-              score_A_OT, score_B_OT
-       FROM Basketball_Match`
+    const [rows] = await pool.execute<BasketballMatchRow[]>(
+      `SELECT 
+        bm.id, 
+        bm.team_A_id, 
+        bm.team_B_id, 
+        bm.status, 
+        bm.timeStart, 
+        bm.timeEnd,  
+        bm.score_A_Q1, bm.score_A_Q2, bm.score_B_Q1, bm.score_B_Q2, 
+        bm.score_A_OT, bm.score_B_OT,
+        ua.uniName AS team_A_uniName, ua.image AS team_A_image, ua.color_code AS team_A_color,
+        ub.uniName AS team_B_uniName, ub.image AS team_B_image, ub.color_code AS team_B_color
+      FROM Basketball_Match bm
+      JOIN University ua ON bm.team_A_id = ua.id
+      JOIN University ub ON bm.team_B_id = ub.id`
     );
 
-    const scoreboard: Match[] = matches as Match[];
+    const scoreboard: Match[] = rows.map((match) => ({
+      id: match.id,
+      team_A: {
+        id: match.team_A_id,
+        uniName: match.team_A_uniName,
+        image: match.team_A_image,
+        color_code: match.team_A_color,
+      },
+      team_B: {
+        id: match.team_B_id,
+        uniName: match.team_B_uniName,
+        image: match.team_B_image,
+        color_code: match.team_B_color,
+      },
+      status: match.status,
+      time: formatTime(match.timeStart, match.timeEnd),
+      score_A_Q1: match.score_A_Q1,
+      score_A_Q2: match.score_A_Q2,
+      score_B_Q1: match.score_B_Q1,
+      score_B_Q2: match.score_B_Q2,
+      score_A_OT: match.score_A_OT,
+      score_B_OT: match.score_B_OT,
+    }));
 
     res.json({
       message: 'Scoreboard fetched successfully',
-      data: scoreboard
+      data: scoreboard,
     });
   } catch (error) {
     console.error('Error fetching scoreboard:', error);
     res.status(500).json({
       message: 'Failed to fetch scoreboard',
-      error: error.message
-    });
-  }
-};
-
-export const getSchedule = async (_req: Request, res: Response) => {
-  try {
-    const [matches]: any = await pool.query(
-      `SELECT id, team_A_id, team_B_id, status, timeStart, timeEnd
-       FROM Basketball_Match`
-    );
-
-    const schedule: Schedule[] = matches as Schedule[];
-
-    res.json({
-      message: 'Schedule fetched successfully',
-      data: schedule
-    });
-  } catch (error) {
-    console.error('Error fetching schedule:', error);
-    res.status(500).json({
-      message: 'Failed to fetch schedule',
-      error: error.message
+      error: (error as Error).message,
     });
   }
 };
