@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  popcat-service:
+    build:
+      context: ../../
+      dockerfile: apps/popcat-service/Dockerfile
+    ports:
+      - '8086:8086'
+    volumes:
+      - ../../apps:/app/apps
+      - ../../jest.preset.js:/app/jest.preset.js
+      - ../../eslint.config.cjs:/app/eslint.config.cjs
+      # - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  redis_data:
+
+networks:
+  default:
+    driver: bridge
