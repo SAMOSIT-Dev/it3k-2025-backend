@@ -36,9 +36,6 @@ export class ClickService {
 
         clickLimits.set(socket.id, userClicks);
         await redisClient.zIncrBy('leaderboard', data.clicks, data.university);
-
-        console.log("User clicked:", data);
-
         await this.leaderboardService.sendLeaderboard(io);
     }
 
