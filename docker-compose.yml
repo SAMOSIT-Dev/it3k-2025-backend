@@ -15,7 +15,7 @@ services:
     container_name: it3k-2025-api-gateway
     build:
       context: .
-      dockerfile: /apps/gateway/Dockerfile
+      dockerfile: ./apps/gateway/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -28,7 +28,7 @@ services:
     container_name: it3k-2025-admin-service
     build: 
       context: .
-      dockerfile: /apps/admin-service/Dockerfile
+      dockerfile: ./apps/admin-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -51,7 +51,7 @@ services:
     container_name: it3k-2025-athletics-service
     build: 
       context: .
-      dockerfile: /apps/athletics-service/Dockerfile
+      dockerfile: ./apps/athletics-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -74,7 +74,7 @@ services:
     container_name: it3k-2025-badminton-service
     build:
       context: .
-      dockerfile: /apps/badminton-service/Dockerfile
+      dockerfile: ./apps/badminton-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -97,7 +97,7 @@ services:
     container_name: it3k-2025-basketball-service
     build:
       context: .
-      dockerfile: /apps/basketball-service/Dockerfile
+      dockerfile: ./apps/basketball-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -120,7 +120,7 @@ services:
     container_name: it3k-2025-football-service
     build:
       context: .
-      dockerfile: /apps/football-service/Dockerfile
+      dockerfile: ./apps/football-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -144,7 +144,7 @@ services:
     container_name: it3k-2025-pingpong-service
     build:
       context: .
-      dockerfile: /apps/pingpong-service/Dockerfile
+      dockerfile: ./apps/pingpong-service/Dockerfile
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -168,7 +168,7 @@ services:
     container_name: it3k-2025-popcat-service
     build:
       context: .
-      dockerfile: /apps/popcat-service/Dockerfile
+      dockerfile: ./apps/popcat-service/Dockerfile
     volumes:
     - ./apps:/app/apps
     - ./jest.preset.js:/app/jest.preset.js
@@ -202,7 +202,7 @@ services:
       - MYSQL_DATABASE=it3k-2025
     volumes:
       - mysql_data:/var/lib/mysql
-      - /mock/db:/docker-entrypoint-initdb.d
+      - ./mock/db:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
