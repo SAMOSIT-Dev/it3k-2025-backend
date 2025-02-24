@@ -21,4 +21,4 @@ COPY libs ./libs
 
 EXPOSE 8081
 
-CMD ["npx", "nx", "serve", "athletics-service", "--configuration=docker"]
+CMD ["npx", "nx", "serve-dev", "athletics-service", "--configuration=docker"]
