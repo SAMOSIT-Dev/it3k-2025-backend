@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import pool from '../databases/database';
-import { Match, BasketballMatchRow, Schedule } from '../models/basketball.model';
-import { formatTime } from '../../../libs/src/lib/libs'
+import { Match, BasketballMatchRow } from '../models/basketball.model';
+import { formatTime } from '../../../../libs/shared/src/index'
 
 export const getScoreboard = async (_req: Request, res: Response) => {
   try {
@@ -55,28 +55,6 @@ export const getScoreboard = async (_req: Request, res: Response) => {
     res.status(500).json({
       message: 'Failed to fetch scoreboard',
       error: (error as Error).message,
-    });
-  }
-};
-
-export const getSchedule = async (_req: Request, res: Response) => {
-  try {
-    const [matches]: any = await pool.query(
-      `SELECT id, team_A_id, team_B_id, status, timeStart, timeEnd
-       FROM Basketball_Match`
-    );
-
-    const schedule: Schedule[] = matches as Schedule[];
-
-    res.json({
-      message: 'Schedule fetched successfully',
-      data: schedule
-    });
-  } catch (error) {
-    console.error('Error fetching schedule:', error);
-    res.status(500).json({
-      message: 'Failed to fetch schedule',
-      error: error.message
     });
   }
 };

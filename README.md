@@ -63,6 +63,13 @@ Then you can go to MySQL Workbench and connect database in container:
 - username: root
 - port: 3307
 - password: password
+- db_name : it3k-2025
+
+## Set APIs name
+Start with /api:
+```sh
+/api/<name>
+```
 
 ## With NX
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>

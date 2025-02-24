@@ -1,0 +1,63 @@
+{
+  "name": "gateway",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/gateway/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/pingpong-service",
+        "main": "apps/gateway/src/main.ts",
+        "tsConfig": "apps/gateway/tsconfig.app.json",
+        "assets": ["apps/gateway/src/assets"]
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "gateway:build",
+        "runBuildTargetDependencies": false,
+        "watch": true,
+        "inspect": "inspect"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gateway:build:development"
+        },
+        "production": {
+          "buildTarget": "gateway:build:production"
+        },
+        "docker" : {
+          "buildTarget": "gateway:build:development",
+          "port": 8099,
+          "inspect" : false
+        }
+      }
+    },
+    "serve-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon",
+        "cwd": "apps/gateway",
+        "args": [
+          "--watch",
+          "src",
+          "--ext",
+          "ts,json",
+          "--exec",
+          "ts-node -r tsconfig-paths/register --project tsconfig.app.json src/main.ts"
+        ]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}
