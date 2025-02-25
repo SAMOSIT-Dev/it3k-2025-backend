@@ -1,4 +1,4 @@
-// services/basketball.service.ts
+
 import { Server } from 'socket.io';
 import { getScoreboard } from '../controllers/basketball.controller';
 
