@@ -1,4 +1,4 @@
-export interface PingpongMatch {
+export interface PingpongMatch{
   id: number;
   type: PingpongType;
   team_A_id: number;
@@ -6,11 +6,9 @@ export interface PingpongMatch {
   time: string;
   locationId: number;
   locationName: string;
-  round?: number;
-  score_A?: number;
-  score_B?: number;
-  team_A_detail: UniversityDetail;
-  team_B_detail: UniversityDetail;
+  pingpong_sets: PingpongSet[];
+  team_A_details: UniversityDetail;
+  team_B_details: UniversityDetail;
 }
 
 export interface UniversityDetail {
@@ -21,9 +19,17 @@ export interface UniversityDetail {
 }
 
 export enum PingpongType {
-    MIX = 'mix',
+    mix = 'mix',
     single_male = 'single male',
-    SINGLE_FEMALE = 'single female',
-    PAIR_MALE = 'pair male',
-    PAIR_FEMALE = 'pair female',
+    single_female = 'single female',
+    pair_male = 'pair male',
+    pair_female = 'pair female',
+}
+
+export interface PingpongSet {
+  id: number;
+  round?: number;
+  score_A?: number;
+  score_B?: number;
+  pingpong_match_id: number;
 }
