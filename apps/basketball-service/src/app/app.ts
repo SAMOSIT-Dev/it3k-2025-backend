@@ -1,10 +1,6 @@
 import express from 'express';
-<<<<<<< HEAD
-import * as path from 'path';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-=======
->>>>>>> feature/docker-deploy
 import basketballRoutes from '../routes/basketball.route';
 
 const app = express();

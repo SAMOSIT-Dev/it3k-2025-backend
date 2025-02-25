@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS basketball_matches (
 -- Create Pingpong_Match table
 CREATE TABLE IF NOT EXISTS pingpong_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_ female') NOT NULL,
+    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS pingpong_sets (
 -- Create Badminton_Match table
 CREATE TABLE IF NOT EXISTS badminton_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_ female') NOT NULL,
+    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,

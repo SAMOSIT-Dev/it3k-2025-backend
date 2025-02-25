@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import pool from '../databases/database';
 import { Match, BasketballMatchRow, Schedule } from '../models/basketball.model';
-import { formatTime } from '../../../libs/src/lib/libs'
+import { formatTime } from '@it3k-2025-backend/shared';
 
 export const getScoreboard = async (_req: Request, res: Response) => {
   try {
