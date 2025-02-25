@@ -1,15 +1,15 @@
+//controllers/basketball.controller.ts
 import { Request, Response } from 'express';
 import pool from '../databases/database';
-import { Match, BasketballMatchRow, Schedule } from '../models/basketball.model';
-import { formatTime } from '@it3k-2025-backend/shared';
+import { Match, BasketballMatchRow } from '../models/basketball.model';
+import { formatTime } from '../../../../libs/shared/src/index'
+import { getTotalScore } from '../utils/calculateScore';
 
 export const getScoreboard = async (_req: Request, res: Response) => {
   try {
     const [rows] = await pool.execute<BasketballMatchRow[]>(
       `SELECT 
         bm.id, 
-        bm.team_A_id, 
-        bm.team_B_id, 
         bm.status, 
         bm.timeStart, 
         bm.timeEnd,  
@@ -25,13 +25,11 @@ export const getScoreboard = async (_req: Request, res: Response) => {
     const scoreboard: Match[] = rows.map((match) => ({
       id: match.id,
       team_A: {
-        id: match.team_A_id,
         uniName: match.team_A_uniName,
         image: match.team_A_image,
         color_code: match.team_A_color,
       },
       team_B: {
-        id: match.team_B_id,
         uniName: match.team_B_uniName,
         image: match.team_B_image,
         color_code: match.team_B_color,
@@ -44,6 +42,8 @@ export const getScoreboard = async (_req: Request, res: Response) => {
       score_B_Q2: match.score_B_Q2,
       score_A_OT: match.score_A_OT,
       score_B_OT: match.score_B_OT,
+      total_score_A: getTotalScore(match.score_A_Q1, match.score_A_Q2, match.score_A_OT),
+      total_score_B: getTotalScore(match.score_B_Q1, match.score_B_Q2, match.score_B_OT),
     }));
 
     res.json({
