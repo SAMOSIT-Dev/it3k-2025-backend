@@ -1,3 +1,4 @@
+//models/basketball.model.ts
 import { RowDataPacket } from "mysql2";
 
 export enum MatchStatus {
@@ -30,13 +31,11 @@ export interface BasketballMatchRow extends RowDataPacket {
 export interface Match {
   id: number;
   team_A: {
-    id: number;
     uniName: string;
     image: string;
     color_code: string;
   };
   team_B: {
-    id: number;
     uniName: string;
     image: string;
     color_code: string;
@@ -49,4 +48,6 @@ export interface Match {
   score_B_Q2: number;
   score_A_OT: number;
   score_B_OT: number;
+  total_score_A: number;
+  total_score_B: number;
 };
