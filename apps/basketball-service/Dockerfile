@@ -17,6 +17,7 @@ RUN npm install -g nx
 
 # Copy source code and libs
 COPY apps ./apps
+COPY libs ./libs
 
 EXPOSE 8083
 

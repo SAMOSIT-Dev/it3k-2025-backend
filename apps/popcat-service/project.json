@@ -1,0 +1,46 @@
+{
+  "name": "popcat-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/popcat-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "popcat-service:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "popcat-service:build:development"
+        },
+        "production": {
+          "buildTarget": "popcat-service:build:production"
+        }
+      }
+    },
+    "serve-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon",
+        "cwd": "apps/popcat-service",
+        "args": [
+          "--watch",
+          "src",
+          "--ext",
+          "ts,json",
+          "--exec",
+          "ts-node -r tsconfig-paths/register --project tsconfig.app.json src/main.ts"
+        ]
+      }
+    },
+    "test": {
+      "options": {
+        "passWithNoTests": true
+      }
+    }
+  }
+}
