@@ -14,7 +14,7 @@ describe('Gateway API Tests', () => {
         it('should check gateway health status', async () => {
             try {
                 const response = await request(app)
-                    .get('/health')
+                    .get('/gateway/health')
                     .timeout(5000)
                     .expect('Content-Type', /json/)
                     .expect(200);

@@ -14,7 +14,7 @@ app.use('/football', footballRouter);
 app.use('/badminton', badmintonRouter);
 app.use('/basketball', basketballRouter);
 app.use('/pingpong', pingpongRouter);
-app.get('/health', (req, res : Response) => {
+app.get('/gateway/health', (req, res : Response) => {
     const response: HealthCheckResponse = {
         status: Status.UP,
         message: 'Gateway is running',

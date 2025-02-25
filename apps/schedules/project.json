@@ -5,13 +5,25 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/schedules",
+        "main": "apps/schedules/src/main.ts",
+        "tsConfig": "apps/schedules/tsconfig.app.json",
+        "assets": ["apps/schedules/src/assets"]
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "schedules:build",
-        "runBuildTargetDependencies": false
+        "runBuildTargetDependencies": false,
+        "watch": true,
+        "inspect": "inspect"
       },
       "configurations": {
         "development": {
@@ -19,7 +31,27 @@
         },
         "production": {
           "buildTarget": "schedules:build:production"
+        },
+        "docker" : {
+          "buildTarget": "schedules:build:development",
+          "port": 8090,
+          "inspect" : false
         }
+      }
+    },
+    "serve-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon",
+        "cwd": "apps/schedules",
+        "args": [
+          "--watch",
+          "src",
+          "--ext",
+          "ts,json",
+          "--exec",
+          "ts-node -r tsconfig-paths/register --project tsconfig.app.json src/main.ts"
+        ]
       }
     },
     "test": {
