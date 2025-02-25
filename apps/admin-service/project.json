@@ -3,12 +3,13 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/admin-service/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/admin-service",
+        "outputPath": "dist/apps/athletics-service",
         "main": "apps/admin-service/src/main.ts",
         "tsConfig": "apps/admin-service/tsconfig.app.json",
         "assets": ["apps/admin-service/src/assets"]
@@ -17,10 +18,11 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
+      "dependsOn": ["build"],
       "options": {
         "buildTarget": "admin-service:build",
-        "watch": true,
         "runBuildTargetDependencies": false,
+        "watch": true,
         "inspect": "inspect"
       },
       "configurations": {
