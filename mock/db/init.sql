@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS universities (
     color_code VARCHAR(50)
 );
 
+
 -- Create Location table
 CREATE TABLE IF NOT EXISTS locations (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -37,7 +38,7 @@ CREATE TABLE IF NOT EXISTS football_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
-    status ENUM('ongoing', 'break', 'finished') NOT NULL,
+    status ENUM('upcoming','ongoing', 'break', 'finished') NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A INT DEFAULT 0,
@@ -52,7 +53,7 @@ CREATE TABLE IF NOT EXISTS basketball_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
-    status ENUM('ongoing', 'break', 'finished') NOT NULL,
+    status ENUM('upcoming','ongoing', 'break', 'finished') NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A_Q1 INT DEFAULT 0,
