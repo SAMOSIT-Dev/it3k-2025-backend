@@ -1,0 +1,220 @@
+version: '3.8'
+
+# Services
+# 1. Admin Service      (Port: 8080)
+# 2. Athletics Service  (Port: 8081)
+# 3. Badminton Service  (Port: 8082)
+# 4. Basketball Service (Port: 8083)
+# 5. Football Service   (Port: 8084)
+# 6. Pingpong Service   (Port: 8085)
+# 7. Popcat Service     (Port: 8086)
+# 8. API Gateway        (Port: 8089)
+
+services:
+  api-gateway:
+    container_name: it3k-2025-api-gateway
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+  admin-service:
+    container_name: it3k-2025-admin-service
+    build: 
+      context: .
+      dockerfile: ./apps/admin-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+  athletics-service:
+    container_name: it3k-2025-athletics-service
+    build: 
+      context: .
+      dockerfile: ./apps/athletics-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+  badminton-service:
+    container_name: it3k-2025-badminton-service
+    build:
+      context: .
+      dockerfile: ./apps/badminton-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+  basketball-service:
+    container_name: it3k-2025-basketball-service
+    build:
+      context: .
+      dockerfile: ./apps/basketball-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+  football-service:
+    container_name: it3k-2025-football-service
+    build:
+      context: .
+      dockerfile: ./apps/football-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+      
+  pingpong-service:
+    container_name: it3k-2025-pingpong-service
+    build:
+      context: .
+      dockerfile: ./apps/pingpong-service/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+
+  popcat-service:
+    container_name: it3k-2025-popcat-service
+    build:
+      context: .
+      dockerfile: ./apps/popcat-service/Dockerfile
+    volumes:
+    - ./apps:/app/apps
+    - ./jest.preset.js:/app/jest.preset.js
+    - ./eslint.config.cjs:/app/eslint.config.cjs
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - it3k-2025-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=it3k-2025
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mock/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - it3k-2025-network
+
+volumes:
+  redis_data:
+  mysql_data:
+
+networks:
+  it3k-2025-network:
+    external: true

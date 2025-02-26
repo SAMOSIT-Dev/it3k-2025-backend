@@ -1,16 +1,7 @@
-import { server } from './app/app';
+import { server } from "./sockets/basketball.socket";
 
-const port = process.env.PORT || 8083;
-server.listen(port, () => {
-  console.log(`basketball-service listening at http://localhost:${port}`);
-});
+const PORT = process.env.PORT || 8083;
 
-server.on('error', console.error);
-
-// Graceful Shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-  });
+server.listen(PORT, () => {
+  console.log(`WebSocket server running on port ${PORT}`);
 });

@@ -32,10 +32,10 @@
         "production": {
           "buildTarget": "gateway:build:production"
         },
-        "docker" : {
+        "docker": {
           "buildTarget": "gateway:build:development",
           "port": 8099,
-          "inspect" : false
+          "inspect": false
         }
       }
     },
@@ -55,8 +55,24 @@
       }
     },
     "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
+        "jestConfig": "apps/gateway/jest.config.ts",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "gateway": {
+          "testPathPattern": ["gateway.spec.ts"]
+        },
+        "service": {
+          "testPathPattern": ["service.spec.ts"]
+        },
+        "coverage": {
+          "codeCoverage": true,
+          "coverageReporters": ["text", "html", "lcov"],
+          "coverageDirectory": "coverage/apps/gateway"
+        }
       }
     }
   }
