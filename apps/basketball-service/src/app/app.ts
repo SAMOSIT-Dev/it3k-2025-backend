@@ -1,25 +1,20 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server } from 'socket.io';
-import basketballRoutes from '../routes/basketball.route';
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import { setupSocket } from "../sockets/basketball.socket";
+import healthRoute from '../routes/health.route';
 
 const app = express();
-const server = createServer(app);
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.ALLOWED_ORIGINS || '*',
+    origin: process.env.ALLOWED_ORIGINS || "*",
   },
+  path: "/api/basketball-service/socket",
 });
 
-app.use(express.json());
-app.use('/api/basketball', basketballRoutes);
+app.use('/', healthRoute);
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
+setupSocket(io);
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
-
-export { app, server, io };
+export { app, server };
