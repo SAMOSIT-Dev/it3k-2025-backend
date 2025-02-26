@@ -118,14 +118,21 @@ CREATE TABLE IF NOT EXISTS athletics_matches (
     event ENUM('100m_male', '100m_female', '400m_male', '400m_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
+    team_C_id INT NOT NULL,
+    team_D_id INT NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A INT DEFAULT 0,
     score_B INT DEFAULT 0,
+    score_C INT DEFAULT 0,
+    score_D INT DEFAULT 0,
     FOREIGN KEY (locationId) REFERENCES locations(id),
     FOREIGN KEY (team_A_id) REFERENCES universities(id) ON DELETE CASCADE,
-    FOREIGN KEY (team_B_id) REFERENCES universities(id) ON DELETE CASCADE
+    FOREIGN KEY (team_B_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (team_C_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (team_D_id) REFERENCES universities(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS schedules (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -205,9 +212,11 @@ INSERT INTO badminton_sets (badminton_match_id, round, score_A, score_B) VALUES
 (1, 3, 21, 17);
 
 -- Insert mock data into athletics_matches
-INSERT INTO athletics_matches (event, team_A_id, team_B_id, time, locationId, score_A, score_B) VALUES
-('100m_male', 1, 2, '10:00:00', 3, 9, 11),
-('400m_female', 3, 4, '11:30:00', 4, 55, 58);
+-- Insert mock data into athletics_matches
+INSERT INTO athletics_matches (event, team_A_id, team_B_id, team_C_id, team_D_id, time, locationId, score_A, score_B, score_C, score_D) VALUES
+('100m_male', 1, 2, 3, 4, '10:00:00', 3, 9, 11, 10, 8),
+('400m_female', 1, 2, 3, 4, '11:30:00', 4, 55, 58, 52, 57);
+
 
 -- Insert mock data into schedules
 INSERT INTO schedules (type, team_A_id, team_B_id, time, locationId) VALUES

@@ -1,12 +1,23 @@
 import Joi from 'joi';
 
-export const athleticsMatchSchema = Joi.object({
-    id: Joi.number().integer().positive(),
-    event: Joi.string().valid('100m male', '100m female', '400m male', '400m female').required(),
-    team_A_id: Joi.number().integer().positive().required(),
-    team_B_id: Joi.number().integer().positive().required(),
-    time: Joi.string().required(),
-    locationId: Joi.number().integer().positive().required(),
-    score_A: Joi.number().integer().min(0).default(0),
-    score_B: Joi.number().integer().min(0).default(0),
+const baseAthleticsMatchSchema = Joi.object({
+    event: Joi.string().valid('100m_male', '100m_female', '400m_male', '400m_female'),
+    team_A_id: Joi.number().integer().positive(),
+    team_B_id: Joi.number().integer().positive(),
+    team_C_id: Joi.number().integer().positive(),
+    team_D_id: Joi.number().integer().positive(),
+    time: Joi.string(),
+    locationId: Joi.number().integer().positive(),
+    score_A: Joi.number().integer().min(0),
+    score_B: Joi.number().integer().min(0),
+    score_C: Joi.number().integer().min(0),
+    score_D: Joi.number().integer().min(0),
 });
+
+export const createAthleticsMatchDTO = baseAthleticsMatchSchema.fork(
+    Object.keys(baseAthleticsMatchSchema.describe().keys),
+    (schema) => schema.required()
+);
+
+export const updateAthleticsMatchDTO = baseAthleticsMatchSchema;
+
