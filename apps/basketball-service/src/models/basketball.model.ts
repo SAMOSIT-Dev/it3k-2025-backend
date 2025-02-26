@@ -2,6 +2,7 @@
 import { RowDataPacket } from "mysql2";
 
 export enum MatchStatus {
+  UPCOMMING = 'upcoming',
   ONGOING = 'ongoing',
   BREAK = 'break',
   FINISHED = 'finished',
@@ -34,20 +35,21 @@ export interface Match {
     uniName: string;
     image: string;
     color_code: string;
+    score_Q1: number;
+    score_Q2: number;
+    score_OT: number;
+    totalScore: number;
   };
   team_B: {
     uniName: string;
     image: string;
     color_code: string;
+    score_Q1: number;
+    score_Q2: number;
+    score_OT: number;
+    totalScore: number;
   };
   status: MatchStatus;
-  time: string;
-  score_A_Q1: number;
-  score_A_Q2: number;
-  score_B_Q1: number;
-  score_B_Q2: number;
-  score_A_OT: number;
-  score_B_OT: number;
-  total_score_A: number;
-  total_score_B: number;
+  timeStart: string;
+  timeEnd: string;
 };
