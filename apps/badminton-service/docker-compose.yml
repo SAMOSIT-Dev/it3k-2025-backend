@@ -6,12 +6,11 @@ services:
       context: ../../
       dockerfile: apps/badminton-service/Dockerfile
     ports:
-      - "8082:8082"
+      - '8082:8082'
     volumes:
       - ../../apps:/app/apps
       - ../../jest.preset.js:/app/jest.preset.js
       - ../../eslint.config.cjs:/app/eslint.config.cjs
-      - /app/node_modules
     environment:
       - NODE_ENV=development
       - DB_HOST=mysql
@@ -27,7 +26,7 @@ services:
   mysql:
     image: mysql:8.0
     ports:
-      - "3307:3306"
+      - '3307:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=it3k-2025
@@ -35,7 +34,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ../../mock/db:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 3
