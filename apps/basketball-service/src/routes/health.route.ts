@@ -18,7 +18,7 @@ router.get('/db-query', checkDbConnection, async (req : Request,res : Response) 
 router.get('/health', (req : Request,res : Response) => {
     const response: HealthCheckResponse = {
         status: Status.UP,
-        message: 'Football service is running on port 8084',
+        message: 'Basketball service is running on port 8083',
         is_connected: true,
         timeStamp: new Date().toISOString()
     }

@@ -16,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: /apps/gateway/Dockerfile
+    ports:
+      - "8099:8099"
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -224,6 +226,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    ports:
+      - "3307:3306"
     networks:
       - it3k-2025-network
 

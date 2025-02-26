@@ -10,7 +10,6 @@ const io = new Server(server, {
   cors: {
     origin: process.env.ALLOWED_ORIGINS || "*",
   },
-  path: "/api/basketball-service/socket",
 });
 
 app.use('/', healthRoute);
