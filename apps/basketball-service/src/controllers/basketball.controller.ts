@@ -2,13 +2,13 @@
 import { Request, Response } from 'express';
 import pool from '../databases/database';
 import { Match, BasketballMatchRow } from '../models/basketball.model';
-import { formatTime } from '../../../../libs/shared/src/index'
+import { formatTime } from '@it3k-2025-backend/shared'
 import { getTotalScore } from '../utils/calculateScore';
 
-export const getScoreboard = async (_req: Request, res: Response) => {
+export const fetchScoreboard = async (): Promise<Match[]> => {
   try {
-    const [rows] = await pool.execute<BasketballMatchRow[]>(
-      `SELECT 
+    const [rows] = await pool.execute<BasketballMatchRow[]>(`
+      SELECT 
         bm.id, 
         bm.status, 
         bm.timeStart, 
@@ -19,10 +19,10 @@ export const getScoreboard = async (_req: Request, res: Response) => {
         ub.uniName AS team_B_uniName, ub.image AS team_B_image, ub.color_code AS team_B_color
       FROM Basketball_Match bm
       JOIN University ua ON bm.team_A_id = ua.id
-      JOIN University ub ON bm.team_B_id = ub.id`
-    );
+      JOIN University ub ON bm.team_B_id = ub.id
+    `);
 
-    const scoreboard: Match[] = rows.map((match) => ({
+    return rows.map((match) => ({
       id: match.id,
       team_A: {
         uniName: match.team_A_uniName,
@@ -45,16 +45,8 @@ export const getScoreboard = async (_req: Request, res: Response) => {
       total_score_A: getTotalScore(match.score_A_Q1, match.score_A_Q2, match.score_A_OT),
       total_score_B: getTotalScore(match.score_B_Q1, match.score_B_Q2, match.score_B_OT),
     }));
-
-    res.json({
-      message: 'Scoreboard fetched successfully',
-      data: scoreboard,
-    });
   } catch (error) {
     console.error('Error fetching scoreboard:', error);
-    res.status(500).json({
-      message: 'Failed to fetch scoreboard',
-      error: (error as Error).message,
-    });
+    return [];
   }
 };
