@@ -6,10 +6,57 @@ dotenv.config();
 
 const athleticsServiceURL = process.env.ATHLETICS_BASE_API_URL;
 
-export const checkAthleticsConnection = async (req: Request, res: Response): Promise<void> => {
+export const checkAthleticsConnection = async (_req: Request, res: Response): Promise<void> => {
     try {
         const response = await axios.get(`${athleticsServiceURL}/health`);
         res.status(200).json(response.data as HealthCheckResponse);
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+};
+
+export const getAllMatches = async (_req: Request, res: Response): Promise<void> => {
+    try {
+        const response = await axios.get(`${athleticsServiceURL}/api/athletics`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+};
+
+export const getMatchByEvent = async (req: Request, res: Response): Promise<void> => {
+    const { event } = req.params;
+    try {
+        const response = await axios.get(`${athleticsServiceURL}/api/athletics/${event}`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+};
+
+export const getMatchById = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    try {
+        const response = await axios.get(`${athleticsServiceURL}/api/athletics/${id}`);
+        res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
         if (axios.isAxiosError(error) && error.response) {

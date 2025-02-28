@@ -10,7 +10,6 @@ export function setupSocket(io: Server) {
 
     sendScoreboard(io);
 
-    //// TEST ////
     socket.on("updateMatchScore", async (updatedData) => {
       console.log("Received updated score:", updatedData);
 
@@ -34,7 +33,6 @@ export function setupSocket(io: Server) {
         console.error("Error updating match score:", error);
       }
     });
-    //////////////
 
 
     socket.on("disconnect", () => {
