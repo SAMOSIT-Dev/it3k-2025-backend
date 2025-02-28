@@ -17,14 +17,14 @@ services:
       context: .
       dockerfile: ./apps/gateway/Dockerfile
     ports:
-      - "8099:8099"
-    environment :
-    - ADMIN_BASE_API_URL=http://admin-service:8080
-    - ATHLETICS_BASE_API_URL=http://athletics-service:8081
-    - BADMINTON_BASE_API_URL=http://badminton-service:8082
-    - BASKETBALL_BASE_API_URL=http://basketball-service:8083
-    - FOOTBALL_BASE_API_URL=http://football-service:8084
-    - PINGPONG_BASE_API_URL=http://pingpong-service:8085
+      - '8099:8099'
+    environment:
+      - ADMIN_BASE_API_URL=http://admin-service:8080
+      - ATHLETICS_BASE_API_URL=http://athletics-service:8081
+      - BADMINTON_BASE_API_URL=http://badminton-service:8082
+      - BASKETBALL_BASE_API_URL=http://basketball-service:8083
+      - FOOTBALL_BASE_API_URL=http://football-service:8084
+      - PINGPONG_BASE_API_URL=http://pingpong-service:8085
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -35,7 +35,7 @@ services:
       - it3k-2025-network
   admin-service:
     container_name: it3k-2025-admin-service
-    build: 
+    build:
       context: .
       dockerfile: ./apps/admin-service/Dockerfile
     volumes:
@@ -58,7 +58,7 @@ services:
       - it3k-2025-network
   athletics-service:
     container_name: it3k-2025-athletics-service
-    build: 
+    build:
       context: .
       dockerfile: ./apps/athletics-service/Dockerfile
     volumes:
@@ -148,7 +148,7 @@ services:
     restart: unless-stopped
     networks:
       - it3k-2025-network
-      
+
   pingpong-service:
     container_name: it3k-2025-pingpong-service
     build:
@@ -179,9 +179,9 @@ services:
       context: .
       dockerfile: ./apps/popcat-service/Dockerfile
     volumes:
-    - ./apps:/app/apps
-    - ./jest.preset.js:/app/jest.preset.js
-    - ./eslint.config.cjs:/app/eslint.config.cjs
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
     environment:
       - NODE_ENV=development
       - REDIS_URL=redis://redis:6379
@@ -215,12 +215,22 @@ services:
       - mysql_data:/var/lib/mysql
       - ./mock/db:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 3
     networks:
       - it3k-2025-network
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    networks:
+      - it3k-2025-network
+    ports:
+      - '80:80'
+    restart: unless-stopped
+    volumes:
+      - ./config/it3k-2025.conf:/etc/nginx/nginx.conf
 
 volumes:
   redis_data:
