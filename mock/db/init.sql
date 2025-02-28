@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS universities (
     color_code VARCHAR(50)
 );
 
+
 -- Create Location table
 CREATE TABLE IF NOT EXISTS locations (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,11 +14,21 @@ CREATE TABLE IF NOT EXISTS locations (
 );
 
 -- Create User table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS admins (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'football', 'basketball', 'badminton', 'pingpong', 'athletics') NOT NULL
+    role ENUM('super_admin', 'admin_football', 'admin_basketball', 'admin_badminton', 'admin_pingpong', 'admin_athletics') NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) NOT NULL,
+    admin_id INT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    is_revoked BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES admins(id)
 );
 
 -- Create Point table
@@ -37,7 +48,7 @@ CREATE TABLE IF NOT EXISTS football_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
-    status ENUM('ongoing', 'break', 'finished') NOT NULL,
+    status ENUM('upcoming','ongoing', 'break', 'finished') NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A INT DEFAULT 0,
@@ -52,7 +63,7 @@ CREATE TABLE IF NOT EXISTS basketball_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
-    status ENUM('ongoing', 'break', 'finished') NOT NULL,
+    status ENUM('upcoming','ongoing', 'break', 'finished') NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A_Q1 INT DEFAULT 0,
@@ -69,7 +80,7 @@ CREATE TABLE IF NOT EXISTS basketball_matches (
 -- Create Pingpong_Match table
 CREATE TABLE IF NOT EXISTS pingpong_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    type ENUM('mix', 'single male', 'single female', 'pair male', 'pair female') NOT NULL,
+    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,
@@ -92,7 +103,7 @@ CREATE TABLE IF NOT EXISTS pingpong_sets (
 -- Create Badminton_Match table
 CREATE TABLE IF NOT EXISTS badminton_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    type ENUM('mix', 'single male', 'single female', 'pair male', 'pair female') NOT NULL,
+    type ENUM('mix', 'single_male', 'single_female', 'pair_male', 'pair_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,
@@ -115,17 +126,24 @@ CREATE TABLE IF NOT EXISTS badminton_sets (
 -- Create Athletics_Match table
 CREATE TABLE IF NOT EXISTS athletics_matches (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    event ENUM('100m male', '100m female', '400m male', '400m female') NOT NULL,
+    event ENUM('100m_male', '100m_female', '400m_male', '400m_female') NOT NULL,
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
+    team_C_id INT NOT NULL,
+    team_D_id INT NOT NULL,
     time TIME NOT NULL,
     locationId INT NOT NULL,
     score_A INT DEFAULT 0,
     score_B INT DEFAULT 0,
+    score_C INT DEFAULT 0,
+    score_D INT DEFAULT 0,
     FOREIGN KEY (locationId) REFERENCES locations(id),
     FOREIGN KEY (team_A_id) REFERENCES universities(id) ON DELETE CASCADE,
-    FOREIGN KEY (team_B_id) REFERENCES universities(id) ON DELETE CASCADE
+    FOREIGN KEY (team_B_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (team_C_id) REFERENCES universities(id) ON DELETE CASCADE,
+    FOREIGN KEY (team_D_id) REFERENCES universities(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE IF NOT EXISTS schedules (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -156,13 +174,13 @@ INSERT INTO locations (name) VALUES
 ('Outdoor Court');
 
 -- Insert mock data into users
-INSERT INTO users (username, password, role) VALUES
-('admin1', 'hashedpassword1', 'admin'),
-('coach_football', 'hashedpassword2', 'football'),
-('coach_basketball', 'hashedpassword3', 'basketball'),
-('coach_badminton', 'hashedpassword4', 'badminton'),
-('coach_pingpong', 'hashedpassword5', 'pingpong'),
-('coach_athletics', 'hashedpassword6', 'athletics');
+INSERT INTO admins (username, password, role) VALUES
+('super_admin111', 'hashedpassword1', 'super_admin'),
+('coach_football', 'hashedpassword2', 'admin_football'),
+('coach_basketball', 'hashedpassword3', 'admin_basketball'),
+('coach_badminton', 'hashedpassword4', 'admin_badminton'),
+('coach_pingpong', 'hashedpassword5', 'admin_pingpong'),
+('coach_athletics', 'hashedpassword6', 'admin_athletics');
 
 -- Insert mock data into points
 INSERT INTO points (universityId, basketball_points, football_points, pingpong_points, badminton_points, athletics_points) VALUES
@@ -184,8 +202,8 @@ INSERT INTO basketball_matches (team_A_id, team_B_id, status, time, locationId, 
 
 -- Insert mock data into pingpong_matches
 INSERT INTO pingpong_matches (type, team_A_id, team_B_id, locationId, time) VALUES
-('single male', 1, 2, 3, '13:00:00'),
-('pair female', 3, 4, 4, '14:30:00');
+('single_male', 1, 2, 3, '13:00:00'),
+('pair_female', 3, 4, 4, '14:30:00');
 
 -- Insert mock data into pingpong_sets
 INSERT INTO pingpong_sets (pingpong_match_id, round, score_A, score_B) VALUES
@@ -195,8 +213,8 @@ INSERT INTO pingpong_sets (pingpong_match_id, round, score_A, score_B) VALUES
 
 -- Insert mock data into badminton_matches
 INSERT INTO badminton_matches (type, team_A_id, team_B_id, locationId, time) VALUES
-('single female', 1, 3, 1, '16:00:00'),
-('pair male', 2, 4, 2, '17:30:00');
+('single_female', 1, 3, 1, '16:00:00'),
+('pair_male', 2, 4, 2, '17:30:00');
 
 -- Insert mock data into badminton_sets
 INSERT INTO badminton_sets (badminton_match_id, round, score_A, score_B) VALUES
@@ -205,9 +223,11 @@ INSERT INTO badminton_sets (badminton_match_id, round, score_A, score_B) VALUES
 (1, 3, 21, 17);
 
 -- Insert mock data into athletics_matches
-INSERT INTO athletics_matches (event, team_A_id, team_B_id, time, locationId, score_A, score_B) VALUES
-('100m male', 1, 2, '10:00:00', 3, 9, 11),
-('400m female', 3, 4, '11:30:00', 4, 55, 58);
+-- Insert mock data into athletics_matches
+INSERT INTO athletics_matches (event, team_A_id, team_B_id, team_C_id, team_D_id, time, locationId, score_A, score_B, score_C, score_D) VALUES
+('100m_male', 1, 2, 3, 4, '10:00:00', 3, 9, 11, 10, 8),
+('400m_female', 1, 2, 3, 4, '11:30:00', 4, 55, 58, 52, 57);
+
 
 -- Insert mock data into schedules
 INSERT INTO schedules (type, team_A_id, team_B_id, time, locationId) VALUES

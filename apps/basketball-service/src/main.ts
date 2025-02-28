@@ -1,16 +1,17 @@
-import app from './app/app';
+import { server } from "./app/app";
+import { closePool } from './databases/database';
 
-const port = process.env.PORT || 8083;
-const server = app.listen(port, () => {
-  console.log(`basketball-service listening at http://localhost:${port}`);
+process.on('SIGINT', async () => {
+  try {
+    await closePool();
+    process.exit(0);
+  } catch (error) {
+    console.error('Error during graceful shutdown:', error);
+    process.exit(1);
+  }
 });
 
-server.on('error', console.error);
-
-// Graceful Shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-  });
+const PORT = process.env.PORT || 8083;
+server.listen(PORT, () => {
+  console.log(`basketball-service Listening at http://localhost:${PORT}`);
 });

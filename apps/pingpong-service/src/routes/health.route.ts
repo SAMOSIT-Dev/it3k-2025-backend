@@ -25,4 +25,13 @@ router.get('/health', (req : Request,res : Response) => {
     res.status(200).json(response);
 })
 
+router.get('/', (req : Request,res : Response) => {
+  const response: HealthCheckResponse = {
+      status: Status.UP,
+      message: 'Pingpong service is fine!!!! Yeahhhh',
+      is_connected: true,
+      timeStamp: new Date().toISOString()
+  }
+  res.status(200).json(response);
+})
 export default router;

@@ -7,6 +7,7 @@ import { Request, Response } from 'express';
 import { HealthCheckResponse, Status } from '@it3k-2025-backend/shared';
 
 
+import cors from 'cors';
 
 const app = express();
 
@@ -23,16 +24,22 @@ app.get('/health', (req : Request,res : Response) => {
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.ALLOWED_ORIGINS || "*",
+    origin: process.env.ALLOWED_ORIGINS || '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true, // If you need cookies or credentials in your requests
     },
+    path: '/popcat/socket/',
 });
-const PORT = process.env.PORT || 3000;
 
+const PORT = process.env.PORT || 8086;
+
+app.use(cors());
 app.use(express.json());
 
 connectRedis().then(() => {
     setupWebSocket(io);
     server.listen(PORT, () => {
-        console.log(`WebSocket server running on port ${PORT}`);
+    console.log(`WebSocket server running on port ${PORT}`);
     });
-})
+});

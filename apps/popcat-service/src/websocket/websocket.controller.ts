@@ -6,6 +6,8 @@ const leaderboardService = new LeaderboardService();
 const clickService = new ClickService(leaderboardService);
 
 export const setupWebSocket = (io: Server) => {
+    leaderboardService.setupLeaderboard();
+
     io.on('connection', (socket) => {
         console.log(`User connected: ${socket.id}`);
 
