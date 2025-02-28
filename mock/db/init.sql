@@ -14,11 +14,21 @@ CREATE TABLE IF NOT EXISTS locations (
 );
 
 -- Create User table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS admins (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'football', 'basketball', 'badminton', 'pingpong', 'athletics') NOT NULL
+    role ENUM('super_admin', 'admin_football', 'admin_basketball', 'admin_badminton', 'admin_pingpong', 'admin_athletics') NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(255) NOT NULL,
+    admin_id INT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    is_revoked BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES admins(id)
 );
 
 -- Create Point table
@@ -164,13 +174,13 @@ INSERT INTO locations (name) VALUES
 ('Outdoor Court');
 
 -- Insert mock data into users
-INSERT INTO users (username, password, role) VALUES
-('admin1', 'hashedpassword1', 'admin'),
-('coach_football', 'hashedpassword2', 'football'),
-('coach_basketball', 'hashedpassword3', 'basketball'),
-('coach_badminton', 'hashedpassword4', 'badminton'),
-('coach_pingpong', 'hashedpassword5', 'pingpong'),
-('coach_athletics', 'hashedpassword6', 'athletics');
+INSERT INTO admins (username, password, role) VALUES
+('super_admin111', 'hashedpassword1', 'super_admin'),
+('coach_football', 'hashedpassword2', 'admin_football'),
+('coach_basketball', 'hashedpassword3', 'admin_basketball'),
+('coach_badminton', 'hashedpassword4', 'admin_badminton'),
+('coach_pingpong', 'hashedpassword5', 'admin_pingpong'),
+('coach_athletics', 'hashedpassword6', 'admin_athletics');
 
 -- Insert mock data into points
 INSERT INTO points (universityId, basketball_points, football_points, pingpong_points, badminton_points, athletics_points) VALUES
