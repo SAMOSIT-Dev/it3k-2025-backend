@@ -9,28 +9,20 @@ export enum MatchStatus {
 
 export interface ScoreBoard {
   id: number;
-  team: {
-    uniName: string;
-    image: string;
-    color_code: string;
-  };
-  win_lose: string;
+  university: string;
+  winLose: string;
   point: string;
-  point_diff: number;
+  pointDiff: number;
 };
 
 export interface Match {
   id: number;
   team_A: {
     uniName: string;
-    image: string;
-    color_code: string;
     score: number;
   };
   team_B: {
     uniName: string;
-    image: string;
-    color_code: string;
     score: number;
   };
   status: MatchStatus;

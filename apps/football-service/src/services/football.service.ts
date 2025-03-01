@@ -9,8 +9,8 @@ const getScoreboard = async (): Promise<ScoreBoard[]> => {
     const [matches] = await pool.execute<any[]>(`
       SELECT
         fm.id, fm.team_A_id, fm.team_B_id, fm.score_A, fm.score_B,
-        uA.uniName AS team_A_name, uA.image AS team_A_image, uA.color_code AS team_A_color,
-        uB.uniName AS team_B_name, uB.image AS team_B_image, uB.color_code AS team_B_color
+        uA.uniName AS team_A_name,
+        uB.uniName AS team_B_name
       FROM football_matches fm
       JOIN universities uA ON fm.team_A_id = uA.id
       JOIN universities uB ON fm.team_B_id = uB.id
@@ -26,16 +26,12 @@ const getScoreboard = async (): Promise<ScoreBoard[]> => {
         {
           id: match.team_A_id,
           uniName: match.team_A_name,
-          image: match.team_A_image,
-          color_code: match.team_A_color,
           score: match.score_A,
           opponentScore: match.score_B,
         },
         {
           id: match.team_B_id,
           uniName: match.team_B_name,
-          image: match.team_B_image,
-          color_code: match.team_B_color,
           score: match.score_B,
           opponentScore: match.score_A,
         },
@@ -45,30 +41,26 @@ const getScoreboard = async (): Promise<ScoreBoard[]> => {
         if (!teamStats[team.id]) {
           teamStats[team.id] = {
             id: team.id,
-            team: {
-              uniName: team.uniName,
-              image: team.image,
-              color_code: team.color_code,
-            },
-            win_lose: '0-0-0',
+            university: team.uniName,
+            winLose: '0-0-0',
             point: '0-0',
-            point_diff: 0,
+            pointDiff: 0,
           };
         }
 
         // Update match results
-        teamStats[team.id].win_lose = getWinLoseScore(teamStats[team.id].win_lose, team.score, team.opponentScore);
+        teamStats[team.id].winLose = getWinLoseScore(teamStats[team.id].winLose, team.score, team.opponentScore);
         teamStats[team.id].point = getPoint(teamStats[team.id].point, team.score, team.opponentScore);
-        teamStats[team.id].point_diff = getPointDiff(teamStats[team.id].point_diff, team.score, team.opponentScore);
+        teamStats[team.id].pointDiff = getPointDiff(teamStats[team.id].pointDiff, team.score, team.opponentScore);
       });
     });
 
     // Convert map values to array and sort by wins and point diff
     return Object.values(teamStats).sort((a, b) => {
-      const [aWins] = a.win_lose.split('-').map(Number);
-      const [bWins] = b.win_lose.split('-').map(Number);
+      const [aWins] = a.winLose.split('-').map(Number);
+      const [bWins] = b.winLose.split('-').map(Number);
 
-      return bWins - aWins || b.point_diff - a.point_diff;
+      return bWins - aWins || b.pointDiff - a.pointDiff;
     });
 
   } catch (error) {
@@ -94,8 +86,8 @@ const getOpeningMatch = async (): Promise<Match[]> => {
         fm.id, fm.team_A_id, fm.team_B_id, fm.status, fm.score_A, fm.score_B,
         DATE_FORMAT(fm.timeStart, '%H:%i:%s') AS timeStart,
         DATE_FORMAT(fm.timeEnd, '%H:%i:%s') AS timeEnd,
-        uA.uniName AS team_A_name, uA.image AS team_A_image, uA.color_code AS team_A_color,
-        uB.uniName AS team_B_name, uB.image AS team_B_image, uB.color_code AS team_B_color
+        uA.uniName AS team_A_name,
+        uB.uniName AS team_B_name
       FROM football_matches fm
       JOIN universities uA ON fm.team_A_id = uA.id
       JOIN universities uB ON fm.team_B_id = uB.id
@@ -107,14 +99,10 @@ const getOpeningMatch = async (): Promise<Match[]> => {
       id: match.id,
       team_A: {
         uniName: match.team_A_name,
-        image: match.team_A_image,
-        color_code: match.team_A_color,
         score: match.score_A ?? 0,
       },
       team_B: {
         uniName: match.team_B_name,
-        image: match.team_B_image,
-        color_code: match.team_B_color,
         score: match.score_B ?? 0,
       },
       status: match.status,
