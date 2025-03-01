@@ -18,7 +18,7 @@ router.get('/db-query', checkDbConnection, async (req : Request,res : Response) 
 router.get('/health', (req : Request,res : Response) => {
     const response: HealthCheckResponse = {
         status: Status.UP,
-        message: 'Admin service is running on port 8081',
+        message: 'Admin service is running on port 8080',
         is_connected: true,
         timeStamp: new Date().toISOString()
     }
