@@ -32,6 +32,7 @@ export const createMatch = async (req: Request, res: Response) => {
             statusCode: 201
         })
     } catch (err) {
+        console.error('Error creating match:', err);
         return errorResponse({ res, error: err });
     }
 };
@@ -55,6 +56,7 @@ export const updateMatch = async (req: Request, res: Response) => {
 
         return successResponse({ res, data: { id: req.params.id, ...value }, message: 'Match updated successfully' });
     } catch (err) {
+        console.error('Error updating match:', err);
         return errorResponse({ res, error: err });
     }
 };
@@ -68,6 +70,7 @@ export const deleteMatch = async (req: Request, res: Response) => {
         await pool.execute('DELETE FROM athletics_matches WHERE id = ?', [req.params.id]);
         return successResponse({ res, data: null, message: 'Match deleted successfully' });
     } catch (err) {
+        console.error('Error deleting match:', err);
         return errorResponse({ res, error: err });
     }
 };
