@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import { Request, Response, NextFunction } from 'express';
+
 dotenv.config();
 
 const dbConfig = {
@@ -29,7 +30,6 @@ export const checkDbConnection = async (
     res.status(500).json({ error: 'Database connection failed' });
   }
 };
-
 
 export const closePool = async (): Promise<void> => {
   try {

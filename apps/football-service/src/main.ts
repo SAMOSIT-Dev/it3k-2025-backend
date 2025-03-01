@@ -1,4 +1,4 @@
-import app from "./app/app";
+import { server } from "./app/app";
 import { closePool } from './database/database';
 
 process.on('SIGINT', async () => {
@@ -10,8 +10,8 @@ process.on('SIGINT', async () => {
     process.exit(1);
   }
 });
-const port = process.env.PORT || 8084;
-const server = app.listen(port, () => {
-  console.log(`football-service Listening at http://localhost:${port}`);
+
+const PORT = process.env.PORT || 8083;
+server.listen(PORT, () => {
+  console.log(`football-service Listening at http://localhost:${PORT}`);
 });
-server.on('error', console.error);

@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS football_matches (
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     status ENUM('upcoming','ongoing', 'break', 'finished') NOT NULL,
-    time TIME NOT NULL,
+    timeStart DATETIME NOT NULL,
+    timeEnd DATETIME NOT NULL,
     locationId INT NOT NULL,
     score_A INT DEFAULT 0,
     score_B INT DEFAULT 0,
@@ -180,10 +181,10 @@ INSERT INTO points (universityId, basketball_points, football_points, pingpong_p
 (4, 14, 11, 7, 10, 12);
 
 -- Insert mock data into football_matches
-INSERT INTO football_matches (team_A_id, team_B_id, status, time, locationId, score_A, score_B) VALUES
-(1, 2, 'ongoing', '14:00:00', 1, 1, 2),
-(3, 4, 'break', '16:30:00', 2, 0, 1),
-(2, 3, 'finished', '18:00:00', 3, 3, 1);
+INSERT INTO football_matches (team_A_id, team_B_id, status, timeStart, timeEnd, locationId, score_A, score_B) VALUES
+(1, 2, 'ongoing', '2025-03-01 16:30:00', '2025-03-01 18:30:00', 1, 1, 2),
+(3, 4, 'break', '2025-03-01 16:30:00', '2025-03-01 18:00:00', 2, 0, 1),
+(2, 3, 'finished', '2025-03-01 15:00:00', '2025-03-01 17:00:00', 3, 3, 1);
 
 -- Insert mock data into basketball_matches
 INSERT INTO basketball_matches (team_A_id, team_B_id, status, time, locationId, score_A_Q1, score_A_Q2, score_B_Q1, score_B_Q2, score_A_OT, score_B_OT) VALUES
