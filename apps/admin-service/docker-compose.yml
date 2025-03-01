@@ -6,7 +6,7 @@ services:
       context: ../../
       dockerfile: apps/admin-service/Dockerfile
     ports:
-      - "8080:8080"
+      - '8080:8080'
     volumes:
       - ../../apps:/app/apps
       - ../../jest.preset.js:/app/jest.preset.js
@@ -27,7 +27,7 @@ services:
   mysql:
     image: mysql:8.0
     ports:
-      - "3307:3306"
+      - '3308:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=it3k-2025
@@ -35,7 +35,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ../../mock/db:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 3

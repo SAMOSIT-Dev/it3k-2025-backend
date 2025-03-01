@@ -1,6 +1,6 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-export const createBadmintonMatchDTO = Joi.object({
+export const createPingPongMatchDTO = Joi.object({
     type: Joi.string()
         .valid('mix', 'single_male', 'single_female', 'pair_male', 'pair_female')
         .required(),
@@ -10,7 +10,7 @@ export const createBadmintonMatchDTO = Joi.object({
     locationId: Joi.number().integer().positive().required(),
 });
 
-export const updateBadmintonMatchDTO = Joi.object({
+export const updatePingPongMatchDTO = Joi.object({
     type: Joi.string().valid('mix', 'single_male', 'single_female', 'pair_male', 'pair_female'),
     team_A_id: Joi.number().integer().positive(),
     team_B_id: Joi.number().integer().positive(),
@@ -18,14 +18,14 @@ export const updateBadmintonMatchDTO = Joi.object({
     locationId: Joi.number().integer().positive(),
 });
 
-export const createBadmintonSetDTO = Joi.object({
+export const createPingPongSetDTO = Joi.object({
     badminton_match_id: Joi.number().integer().positive().required(),
     round: Joi.number().integer().positive().required(),
     score_A: Joi.number().integer().min(0).default(0),
     score_B: Joi.number().integer().min(0).default(0),
 });
 
-export const updateBadmintonSetDTO = Joi.object({
+export const updatePingPongSetDTO = Joi.object({
     round: Joi.number().integer().positive(),
     score_A: Joi.number().integer().min(0),
     score_B: Joi.number().integer().min(0),
