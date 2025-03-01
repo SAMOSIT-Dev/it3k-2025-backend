@@ -21,4 +21,4 @@ COPY libs ./libs
 
 EXPOSE 8099
 
-CMD ["npx", "nx", "serve", "gateway", "--configuration=docker"]
+CMD ["npx", "nx", "serve-dev", "gateway", "--configuration=docker"]

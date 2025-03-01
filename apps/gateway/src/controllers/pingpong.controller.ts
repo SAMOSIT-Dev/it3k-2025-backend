@@ -6,12 +6,11 @@ dotenv.config();
 
 const pingPongServiceURL = process.env.PINGPONG_BASE_API_URL;
 
-export const checkPingPongConnection = async (req: Request, res: Response): Promise<void> => {
+export const checkPingPongConnection = async (_req: Request, res: Response): Promise<void> => {
     try {
         const response = await axios.get(`${pingPongServiceURL}/health`);
         res.status(200).json(response.data as HealthCheckResponse);
     } catch (error) {
-        console.log(error);
         if (axios.isAxiosError(error) && error.response) {
             res.status(error.response.status).json(error.response.data);
         } else {
@@ -20,3 +19,33 @@ export const checkPingPongConnection = async (req: Request, res: Response): Prom
         }
     }
 };
+
+export const getPingpongMatches = async (_req: Request, res: Response): Promise<void> => {
+    try {
+        const response = await axios.get(`${pingPongServiceURL}/api/pingpong`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+}
+
+export const getPingpongMatchesByTypes = async (req: Request, res: Response): Promise<void> => {
+    const { type } = req.params;
+    try {
+        const response = await axios.get(`${pingPongServiceURL}/api/pingpong/${type}`,
+        );
+        res.status(200).json(response.data);
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+}
