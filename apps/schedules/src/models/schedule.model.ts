@@ -34,7 +34,7 @@ export interface Team {
     teamId: number;
     name: string;
     image: string;
-    colorCode: string;
+    color_code: string;
 }
 
 export interface FormattedSchedule {

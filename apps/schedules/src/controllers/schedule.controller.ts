@@ -38,13 +38,13 @@ export const getSchedules = async (req: Request, res: Response) => {
                 teamId: row.team_A_id,
                 name: row.team_A_name,
                 image: row.team_A_image,
-                colorCode: row.team_A_color
+                color_code: row.team_A_color
             },
             teamB: {
                 teamId: row.team_B_id,
                 name: row.team_B_name,
                 image: row.team_B_image,
-                colorCode: row.team_B_color
+                color_code: row.team_B_color
             }
         }));
         
