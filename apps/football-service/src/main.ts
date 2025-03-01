@@ -11,7 +11,7 @@ process.on('SIGINT', async () => {
   }
 });
 
-const PORT = process.env.PORT || 8083;
+const PORT = process.env.PORT || 8084;
 server.listen(PORT, () => {
   console.log(`football-service Listening at http://localhost:${PORT}`);
 });
