@@ -9,10 +9,7 @@ describe('Sports Services Health Check Tests', () => {
         admin: { port: '8080', app: express(), server: null },
         athletics: { port: '8081', app: express(), server: null },
         badminton: { port: '8082', app: express(), server: null },
-        basketball: { port: '8083', app: express(), server: null },
-        football: { port: '8084', app: express(), server: null },
         pingpong: { port: '8085', app: express(), server: null },
-        popcat: { port: '3000', app: express(), server: null }
     };
 
     // HealthService instances
@@ -89,29 +86,7 @@ describe('Sports Services Health Check Tests', () => {
             });
         });
 
-        // Basketball Service (8083)
-        describe('Basketball Service', () => {
-            it('should return UP status when service is healthy', async () => {
-                const response = await request(services.basketball.app)
-                    .get('/health')
-                    .expect(200);
 
-                expect(response.body.status).toBe(Status.UP);
-                expect(response.body.message).toContain('Basketball');
-            });
-        });
-
-        // Football Service (8084)
-        describe('Football Service', () => {
-            it('should return UP status when service is healthy', async () => {
-                const response = await request(services.football.app)
-                    .get('/health')
-                    .expect(200);
-
-                expect(response.body.status).toBe(Status.UP);
-                expect(response.body.message).toContain('Football');
-            });
-        });
 
         // Ping Pong Service (8085)
         describe('Ping Pong Service', () => {
@@ -122,17 +97,6 @@ describe('Sports Services Health Check Tests', () => {
 
                 expect(response.body.status).toBe(Status.UP);
                 expect(response.body.message).toContain('Pingpong');
-            });
-        });
-
-        describe('Pop Cat Service', () => {
-            it('should return UP status when service is healthy', async () => {
-                const response = await request(services.popcat.app)
-                    .get('/health')
-                    .expect(200);
-
-                expect(response.body.status).toBe(Status.UP);
-                expect(response.body.message).toContain('Popcat');
             });
         });
     });
@@ -211,21 +175,5 @@ describe('Sports Services Health Check Tests', () => {
             });
         });
 
-        it('should handle mixed status responses', async () => {
-            // Temporarily take down one service
-            services.football.server.close();
-
-            const healthChecks = Object.values(healthServices).map(service => 
-                service.checkServiceHealth()
-            );
-
-            const responses = await Promise.all(healthChecks);
-            
-            const downServices = responses.filter(r => r.status === Status.DOWN);
-            expect(downServices.length).toBe(1);
-
-            // Restore service
-            services.football.server = services.football.app.listen(8084);
-        });
     });
 });

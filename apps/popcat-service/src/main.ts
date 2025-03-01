@@ -27,9 +27,8 @@ const io = new Server(server, {
     origin: process.env.ALLOWED_ORIGINS || '*',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
-    credentials: true, // If you need cookies or credentials in your requests
     },
-    path: '/popcat/socket/',
+    path: '/api/popcat-service/socket',
 });
 
 const PORT = process.env.PORT || 8086;
