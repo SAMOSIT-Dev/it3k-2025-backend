@@ -41,7 +41,6 @@ export const checkRole = (allowedRoles: string[]) => {
     };
 };
 
-export const isSuperAdmin = checkRole(['super_admin']);
 export const isFootballAdmin = checkRole(['super_admin', 'admin_football']);
 export const isBasketballAdmin = checkRole(['super_admin', 'admin_basketball']);
 export const isBadmintonAdmin = checkRole(['super_admin', 'admin_badminton']);
