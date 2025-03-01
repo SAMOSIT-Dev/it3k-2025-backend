@@ -11,7 +11,6 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
   },
-  path: "/api/basketball-service/socket",
 });
 
 
