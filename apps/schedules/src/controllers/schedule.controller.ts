@@ -48,10 +48,18 @@ export const getSchedules = async (req: Request, res: Response) => {
             }
         }));
         
-        res.status(200).json(formattedRows);
+        res.status(200).json({
+            success: true,
+            message: 'All Schedules fetched successfully',
+            data: formattedRows
+        });
     } catch (error) {
         console.error('Error executing query:', error);
-        res.status(500).json({ error: 'Failed to fetch schedules' });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch schedules',
+            data: []
+        });
     }
 }
 
@@ -65,7 +73,11 @@ export const updateSchedule = async (req: Request, res: Response) => {
         );
 
         if (!schedules[0]) {
-            return res.status(404).json({ error: 'Schedule not found' });
+            return res.status(404).json({
+                success: false,
+                message: 'Schedule not found',
+                data: []
+            });
         }
 
         const currentSchedule = schedules[0];
@@ -84,11 +96,18 @@ export const updateSchedule = async (req: Request, res: Response) => {
             ]
         );
 
-        res.status(200).json({ message: 'Schedule updated successfully', scheduleId, currentSchedule });
+        res.status(200).json({
+            success: true,
+            message: 'Schedule updated successfully',
+            data: [{ scheduleId, ...currentSchedule }]
+        });
         
     } catch (error) {
         console.error('Error executing update:', error);
-        res.status(500).json({ error: 'Failed to updated schedule' });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update schedule',
+            data: []
+        });
     }
-    
 }

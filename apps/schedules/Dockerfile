@@ -21,4 +21,4 @@ COPY libs ./libs
 
 EXPOSE 8090
 
-CMD ["npx", "nx", "serve", "schedules-service", "--configuration=docker"]
+CMD ["npx", "nx", "serve", "schedules", "--configuration=docker"]

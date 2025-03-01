@@ -13,14 +13,16 @@ export const getPingpongMatches = async (_req: Request, res: Response) => {
     const [matches] = await pool.query(query);
 
     res.status(200).json({
+      success: true,
       message: `Pingpong matches fetched successfully`,
       data: matches,
     });
   } catch (error) {
     console.error(`Error fetching matches: `, error);
     res.status(500).json({
+      success: false,
       message: `Error fetching matches`,
-      error: error.message,
+      data: [],
     });
   }
 };
@@ -31,7 +33,9 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
     type = type.toLowerCase();
     if (!(type in PingpongType)) {
       return res.status(400).json({
+        success: false,
         message: `Invalid pingpong type: ${type}. Using this format: single_female`,
+        data: [],
       });
     }
 
@@ -48,7 +52,9 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
 
     if (!matches) {
       return res.status(404).json({
+        success: false,
         message: `No pingpong matches found for type: ${type}`,
+        data: [],
       });
     }
     const result: PingpongMatch[] = matches.map((match) => ({
@@ -81,14 +87,16 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
     }));
 
     res.status(200).json({
+      success: true,
       message: `Pingpong matches for ${type} fetched successfully`,
       data: result,
     });
   } catch (error) {
     console.error(`Error fetching ${req.params.type} matches: `, error);
     res.status(500).json({
+      success: false,
       message: `Error fetching ${req.params.type} matches`,
-      error: error.message,
+      data: [],
     });
   }
 };

@@ -13,14 +13,16 @@ export const getBadmintonMatches = async (_req: Request, res: Response) => {
     const [matches] = await pool.query(query);
 
     res.status(200).json({
+      success: true,
       message: `Badminton matches fetched successfully`,
       data: matches,
     });
   } catch (error) {
     console.error(`Error fetching matches: `, error);
     res.status(500).json({
+      success: false,
       message: `Error fetching matches`,
-      error: error.message,
+      data: [],
     });
   }
 };
@@ -31,7 +33,9 @@ export const getBadmintonMatchesByType = async (req: Request, res: Response) => 
     type = type.toLowerCase();
     if (!(type in BadmintonType)) {
       return res.status(400).json({
+        success: false,
         message: `Invalid badminton type: ${type}. Using this format: single_female`,
+        data: [],
       });
     }
 
@@ -48,7 +52,9 @@ export const getBadmintonMatchesByType = async (req: Request, res: Response) => 
 
     if (!matches) {
       return res.status(404).json({
+        success: false,
         message: `No badminton matches found for type: ${type}`,
+        data: [],
       });
     }
     const result: BadmintonMatch[] = matches.map((match) => ({
@@ -81,14 +87,16 @@ export const getBadmintonMatchesByType = async (req: Request, res: Response) => 
     }));
 
     res.status(200).json({
+      success: true,
       message: `Badminton matches for ${type} fetched successfully`,
       data: result,
     });
   } catch (error) {
     console.error(`Error fetching ${req.params.type} matches: `, error);
     res.status(500).json({
+      success: false,
       message: `Error fetching ${req.params.type} matches`,
-      error: error.message,
+      data: [],
     });
   }
 };

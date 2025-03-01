@@ -25,6 +25,7 @@ services:
       - BASKETBALL_BASE_API_URL=http://basketball-service:8083
       - FOOTBALL_BASE_API_URL=http://football-service:8084
       - PINGPONG_BASE_API_URL=http://pingpong-service:8085
+      - SCHEDULE_BASE_API_URL=http://schedule-service:8090
     volumes:
       - ./apps:/app/apps
       - ./jest.preset.js:/app/jest.preset.js
@@ -33,6 +34,31 @@ services:
     restart: unless-stopped
     networks:
       - it3k-2025-network
+
+  schedule-service:
+    container_name: it3k-2025-schedule-service
+    build:
+      context: .
+      dockerfile: ./apps/schedules/Dockerfile
+    volumes:
+      - ./apps:/app/apps
+      - ./jest.preset.js:/app/jest.preset.js
+      - ./eslint.config.cjs:/app/eslint.config.cjs
+      # - ./app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=it3k-2025
+      - DB_PORT=3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - it3k-2025-network
+    
   admin-service:
     container_name: it3k-2025-admin-service
     build:
