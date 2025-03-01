@@ -9,3 +9,17 @@ export interface AthleticsMatch {
     score_B?: number;
 }
 
+export type University = {
+    id: number;
+    uniName: string;
+    image: string;
+    colorCode: string;
+    ranking: number;
+};
+
+export type GroupedMatch = {
+    event: string;
+    time: string;
+    location: string;
+    teams: University[];
+};
