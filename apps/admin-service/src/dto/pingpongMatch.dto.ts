@@ -19,7 +19,7 @@ export const updatePingPongMatchDTO = Joi.object({
 });
 
 export const createPingPongSetDTO = Joi.object({
-    badminton_match_id: Joi.number().integer().positive().required(),
+    pingpong_match_id: Joi.number().integer().positive().required(),
     round: Joi.number().integer().positive().required(),
     score_A: Joi.number().integer().min(0).default(0),
     score_B: Joi.number().integer().min(0).default(0),
