@@ -16,8 +16,8 @@ services:
     build:
       context: .
       dockerfile: ./apps/gateway/Dockerfile
-    ports:
-      - '8099:8099'
+    # ports:
+    #   - '8099:8099'
     environment:
       - ADMIN_BASE_API_URL=http://admin-service:8080
       - ATHLETICS_BASE_API_URL=http://athletics-service:8081
@@ -235,8 +235,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=it3k-2025
-    ports:
-      - 3307:3306
+    # ports:
+    #   - 3307:3306
     volumes:
       - mysql_data:/var/lib/mysql
       - ./mock/db:/docker-entrypoint-initdb.d
