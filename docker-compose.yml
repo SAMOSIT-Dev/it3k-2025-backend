@@ -16,8 +16,8 @@ services:
     build:
       context: .
       dockerfile: ./apps/gateway/Dockerfile
-    ports:
-      - '8099:8099'
+    # ports:
+    #   - '8099:8099'
     environment:
       - ADMIN_BASE_API_URL=http://admin-service:8080
       - ATHLETICS_BASE_API_URL=http://athletics-service:8081
