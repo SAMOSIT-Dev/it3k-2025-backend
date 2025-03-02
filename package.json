@@ -10,12 +10,14 @@
     "dev:badminton": "nx run badminton-service:serve-dev",
     "dev:pingpong": "nx run pingpong-service:serve-dev",
     "dev:gateway": "nx run gateway:serve-dev",
-    "dev:schedule": "nx run schedules:serve-dev"
+    "dev:schedule": "nx run schedules:serve-dev",
+    "dev:point": "nx run point-service:serve-dev"
   },
   "private": true,
   "dependencies": {
     "axios": "^1.6.0",
     "bcryptjs": "^3.0.2",
+    "caniuse-lite": "^1.0.30001701",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.18.1",
