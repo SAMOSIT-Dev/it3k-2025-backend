@@ -40,14 +40,15 @@ export const getBadmintonMatchesByType = async (req: Request, res: Response) => 
     }
 
     const query = `SELECT m.*, l.name AS locationName, 
-      JSON_OBJECT("id", uA.id, "name", uA.uniName, "image", uA.image, "color_code", uA.color_code) AS team_A_details,
-      JSON_OBJECT("id", uB.id, "name", uB.uniName, "image", uB.image, "color_code", uB.color_code) AS team_B_details,
+      JSON_OBJECT("id", uA.id, "uniName", uA.uniName, "image", uA.image, "color_code", uA.color_code) AS team_A_details,
+      JSON_OBJECT("id", uB.id, "uniName", uB.uniName, "image", uB.image, "color_code", uB.color_code) AS team_B_details,
       JSON_ARRAYAGG(
         JSON_OBJECT("id", s.id, "badminton_match_id", s.badminton_match_id, "round", s.round, "score_A", s.score_A, "score_B", s.score_B)
       ) AS badminton_sets
       FROM badminton_matches AS m JOIN locations l ON m.locationId = l.id JOIN universities uA ON m.team_A_id = uA.id
-      JOIN universities uB ON m.team_B_id = uB.id LEFT JOIN badminton_sets s ON m.id = s.badminton_match_id WHERE m.type = ?
-      GROUP BY m.id`;
+      JOIN universities uB ON m.team_B_id = uB.id LEFT JOIN badminton_sets s ON m.id = s.badminton_match_id
+      AND s.id = (SELECT MAX(id) FROM badminton_sets WHERE badminton_match_id = m.id)
+      WHERE m.type = ? GROUP BY m.id`;
     const [matches] = await pool.query<RowDataPacket[]>(query, [type]);
 
     if (!matches) {
@@ -57,7 +58,8 @@ export const getBadmintonMatchesByType = async (req: Request, res: Response) => 
         data: [],
       });
     }
-    const result: BadmintonMatch[] = matches.map((match) => ({
+    const result: BadmintonMatch[] = matches.map((match, index) => ({
+      matchId: index + 1,
       id: match.id,
       type: match.type as BadmintonType,
       team_A_id: match.team_A_id,

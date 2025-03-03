@@ -1,4 +1,5 @@
 export interface BadmintonMatch{
+    matchId: number;
     id: number;
     type: BadmintonType;
     team_A_id: number;
