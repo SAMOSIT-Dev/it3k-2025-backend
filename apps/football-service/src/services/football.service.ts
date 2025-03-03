@@ -5,10 +5,15 @@ import { getWinLoseScore, getPoint, getPointDiff } from '../utils/calculateScore
 
 const getScoreboard = async (): Promise<ScoreBoard[]> => {
   try {
-    // Fetch all finished football matches
+    // Fetch all universities
+    const [universities] = await pool.execute<any[]>(`
+      SELECT id, uniName FROM universities
+    `);
+
+    // Fetch all football matches (not just finished ones)
     const [matches] = await pool.execute<any[]>(`
       SELECT
-        fm.id, fm.team_A_id, fm.team_B_id, fm.score_A, fm.score_B,
+        fm.id, fm.team_A_id, fm.team_B_id, fm.score_A, fm.score_B, fm.status,
         uA.uniName AS team_A_name,
         uB.uniName AS team_B_name
       FROM football_matches fm
@@ -21,6 +26,18 @@ const getScoreboard = async (): Promise<ScoreBoard[]> => {
     // Create a map to track team statistics
     const teamStats: { [key: number]: ScoreBoard } = {};
 
+    // Initialize all universities with default scores
+    universities.forEach((uni) => {
+      teamStats[uni.id] = {
+        id: uni.id,
+        university: uni.uniName,
+        winLose: '0-0-0',
+        point: '0-0',
+        pointDiff: 0,
+      };
+    });
+
+    // Process matches and update scores
     matches.forEach((match) => {
       const teams = [
         {
@@ -48,14 +65,13 @@ const getScoreboard = async (): Promise<ScoreBoard[]> => {
           };
         }
 
-        // Update match results
         teamStats[team.id].winLose = getWinLoseScore(teamStats[team.id].winLose, team.score, team.opponentScore);
         teamStats[team.id].point = getPoint(teamStats[team.id].point, team.score, team.opponentScore);
         teamStats[team.id].pointDiff = getPointDiff(teamStats[team.id].pointDiff, team.score, team.opponentScore);
       });
     });
 
-    // Convert map values to array and sort by wins and point diff
+    // Convert map values to array and sort by wins and point difference
     return Object.values(teamStats).sort((a, b) => {
       const [aWins] = a.winLose.split('-').map(Number);
       const [bWins] = b.winLose.split('-').map(Number);
