@@ -13,16 +13,14 @@ export const getPingpongMatches = async (_req: Request, res: Response) => {
     const [matches] = await pool.query(query);
 
     res.status(200).json({
-      success: true,
       message: `Pingpong matches fetched successfully`,
       data: matches,
     });
   } catch (error) {
     console.error(`Error fetching matches: `, error);
     res.status(500).json({
-      success: false,
       message: `Error fetching matches`,
-      data: [],
+      error: error.message,
     });
   }
 };
@@ -33,31 +31,30 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
     type = type.toLowerCase();
     if (!(type in PingpongType)) {
       return res.status(400).json({
-        success: false,
         message: `Invalid pingpong type: ${type}. Using this format: single_female`,
-        data: [],
       });
     }
 
-    const query = `SELECT m.*, l.name AS locationName, 
-      JSON_OBJECT("id", uA.id, "name", uA.uniName, "image", uA.image, "color_code", uA.color_code) AS team_A_details,
-      JSON_OBJECT("id", uB.id, "name", uB.uniName, "image", uB.image, "color_code", uB.color_code) AS team_B_details,
+      const query = `SELECT m.*, l.name AS locationName, 
+      JSON_OBJECT("id", uA.id, "uniName", uA.uniName, "image", uA.image, "color_code", uA.color_code) AS team_A_details,
+      JSON_OBJECT("id", uB.id, "uniName", uB.uniName, "image", uB.image, "color_code", uB.color_code) AS team_B_details,
       JSON_ARRAYAGG(
         JSON_OBJECT("id", s.id, "pingpong_match_id", s.pingpong_match_id, "round", s.round, "score_A", s.score_A, "score_B", s.score_B)
       ) AS pingpong_sets
       FROM pingpong_matches AS m JOIN locations l ON m.locationId = l.id JOIN universities uA ON m.team_A_id = uA.id
-      JOIN universities uB ON m.team_B_id = uB.id LEFT JOIN pingpong_sets s ON m.id = s.pingpong_match_id WHERE m.type = ?
-      GROUP BY m.id`;
+      JOIN universities uB ON m.team_B_id = uB.id LEFT JOIN pingpong_sets s ON m.id = s.pingpong_match_id
+      AND s.id = (SELECT MAX(id) FROM pingpong_sets WHERE pingpong_match_id = m.id)
+      WHERE m.type = ? GROUP BY m.id`;
+
     const [matches] = await pool.query<RowDataPacket[]>(query, [type]);
 
     if (!matches) {
       return res.status(404).json({
-        success: false,
         message: `No pingpong matches found for type: ${type}`,
-        data: [],
       });
     }
-    const result: PingpongMatch[] = matches.map((match) => ({
+    const result: PingpongMatch[] = matches.map((match, index) => ({
+      matchId: index + 1,
       id: match.id,
       type: match.type as PingpongType,
       team_A_id: match.team_A_id,
@@ -87,16 +84,14 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
     }));
 
     res.status(200).json({
-      success: true,
       message: `Pingpong matches for ${type} fetched successfully`,
       data: result,
     });
   } catch (error) {
     console.error(`Error fetching ${req.params.type} matches: `, error);
     res.status(500).json({
-      success: false,
       message: `Error fetching ${req.params.type} matches`,
-      data: [],
+      error: error.message,
     });
   }
 };
