@@ -14,6 +14,7 @@ import adminFootballRouter from '../routes/admin/football.route'
 import adminPingpongRouter from '../routes/admin/pingpong.route'
 import adminBadmintonRouter from '../routes/admin/badminton.route'
 import adminAthleticsRouter from '../routes/admin/athletics.route'
+import e from 'express';
 
 const app = express();
 app.use('/athletics', athleticsRouter);
@@ -27,6 +28,7 @@ app.use('/schedule', scheduleRouter);
 app.use('/points', pointRouter);
 
 // Admin 
+app.use(express.json());
 app.use('/admin/auth', authRouter);
 app.use('/admin/basketball', adminBasketballRouter);
 app.use('/admin/football', adminFootballRouter);
