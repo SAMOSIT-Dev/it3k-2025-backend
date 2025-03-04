@@ -5,6 +5,7 @@ export const createBasketballDTO = Joi.object({
     team_B_id: Joi.number().integer().positive().required(),
     time: Joi.string().required(),
     locationId: Joi.number().integer().positive().required(),
+    
 })
 
 export const updateBasketballMatchDTO = Joi.object({
