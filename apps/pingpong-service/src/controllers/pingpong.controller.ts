@@ -38,13 +38,11 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
       const query = `SELECT m.*, l.name AS locationName, 
       JSON_OBJECT("id", uA.id, "uniName", uA.uniName, "image", uA.image, "color_code", uA.color_code) AS team_A_details,
       JSON_OBJECT("id", uB.id, "uniName", uB.uniName, "image", uB.image, "color_code", uB.color_code) AS team_B_details,
-      JSON_ARRAYAGG(
-        JSON_OBJECT("id", s.id, "pingpong_match_id", s.pingpong_match_id, "round", s.round, "score_A", s.score_A, "score_B", s.score_B)
-      ) AS pingpong_sets
+      JSON_OBJECT("id", s.id, "pingpong_match_id", s.pingpong_match_id, "round", s.round, "score_A", s.score_A, "score_B", s.score_B) AS pingpong_sets
       FROM pingpong_matches AS m JOIN locations l ON m.locationId = l.id JOIN universities uA ON m.team_A_id = uA.id
-      JOIN universities uB ON m.team_B_id = uB.id LEFT JOIN pingpong_sets s ON m.id = s.pingpong_match_id
-      AND s.id = (SELECT MAX(id) FROM pingpong_sets WHERE pingpong_match_id = m.id)
-      WHERE m.type = ? GROUP BY m.id`;
+      JOIN universities uB ON m.team_B_id = uB.id 
+      LEFT JOIN pingpong_sets s ON s.id = ( SELECT MAX(id) FROM pingpong_sets WHERE pingpong_match_id = m.id)
+      WHERE m.type = ?`;
 
     const [matches] = await pool.query<RowDataPacket[]>(query, [type]);
 
@@ -62,6 +60,8 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
       time: match.time,
       locationId: match.locationId,
       locationName: match.locationName,
+      team_A_number: match.team_A_number,
+      team_B_number: match.team_B_number,
       team_A_details: {
         id: match.team_A_details.id,
         uniName: match.team_A_details.uniName,
@@ -74,13 +74,13 @@ export const getPingpongMatchesByType = async (req: Request, res: Response) => {
         image: match.team_B_details.image,
         color_code: match.team_B_details.color_code,
       } as UniversityDetail,
-      pingpong_sets: match.pingpong_sets.map((set) => ({
-        id: set.id,
-        pingpong_match_id: set.pingpong_match_id,
-        round: set.round,
-        score_A: set.score_A,
-        score_B: set.score_B,
-      })),
+      pingpong_sets: {
+        id: match.pingpong_sets.id,
+        pingpong_match_id: match.pingpong_sets.pingpong_match_id,
+        round: match.pingpong_sets.round,
+        score_A: match.pingpong_sets.score_A,
+        score_B: match.pingpong_sets.score_B,
+      },
     }));
 
     res.status(200).json({
