@@ -4,8 +4,12 @@ import { Server } from "socket.io";
 import { setupSocket } from "../sockets/football.sockets";
 import healthRoute from '../routes/health.route';
 import footballRoutes from '../routes/football.route';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const server = http.createServer(app);
 
 const io = new Server(server, {
