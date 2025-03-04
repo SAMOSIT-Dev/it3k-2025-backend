@@ -3,7 +3,16 @@ import { pool } from '../database/database';
 
 export const getPoints = async (_req: Request, res: Response) => {
   try {
-    const query = `SELECT * from points`;
+    const query = ` SELECT 
+    points.id,
+    universities.uniName AS universityName,
+    points.basketball_points,
+    points.football_points,
+    points.pingpong_points,
+    points.badminton_points,
+    points.athletics_points
+  FROM points 
+  JOIN universities ON points.universityId = universities.id`;
     const [points] = await pool.query(query);
 
     res.status(200).json({
