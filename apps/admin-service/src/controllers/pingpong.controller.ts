@@ -10,10 +10,10 @@ export const createPingpongMatch = async (req: Request, res: Response) => {
             return res.status(400).json({ success: false, message: error.details[0].message });
         }
 
-        const { type, team_A_id, team_B_id, time, locationId } = req.body;
+        const { type, team_A_id, team_B_id, time, locationId, teamId } = req.body;
 
-        const query = `INSERT INTO pingpong_matches (type, team_A_id, team_B_id, time, locationId) VALUES (?, ?, ?, ?, ?)`;
-        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId]);
+        const query = `INSERT INTO pingpong_matches (type, team_A_id, team_B_id, time, locationId, teamId) VALUES (?, ?, ?, ?, ?, ?)`;
+        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId, teamId]);
 
         res.status(201).json({
             success: true,

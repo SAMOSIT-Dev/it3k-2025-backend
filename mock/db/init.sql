@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS pingpong_matches (
     team_A_id INT NOT NULL,
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,
+    teamId  INT NOT NULL,
     time TIME NOT NULL,
     FOREIGN KEY (locationId) REFERENCES locations(id) ON DELETE CASCADE,
     FOREIGN KEY (team_A_id) REFERENCES universities(id) ON DELETE CASCADE,
@@ -109,6 +110,7 @@ CREATE TABLE IF NOT EXISTS badminton_matches (
     team_B_id INT NOT NULL,
     locationId INT NOT NULL,
     time TIME NOT NULL,
+    teamId  INT NOT NULL,
     FOREIGN KEY (locationId) REFERENCES locations(id) ON DELETE CASCADE,
     FOREIGN KEY (team_A_id) REFERENCES universities(id) ON DELETE CASCADE,
     FOREIGN KEY (team_B_id) REFERENCES universities(id) ON DELETE CASCADE
@@ -202,9 +204,9 @@ INSERT INTO basketball_matches (team_A_id, team_B_id, status, time, locationId, 
 (2, 4, 'finished', '17:00:00', 3, 20, 25, 22, 19, 0, 0);
 
 -- Insert mock data into pingpong_matches
-INSERT INTO pingpong_matches (type, team_A_id, team_B_id, locationId, time) VALUES
-('single_male', 1, 2, 3, '13:00:00'),
-('pair_female', 3, 4, 4, '14:30:00');
+INSERT INTO pingpong_matches (type, team_A_id, team_B_id, locationId, time, teamId) VALUES
+('single_male', 1, 2, 3, '13:00:00',1),
+('pair_female', 3, 4, 4, '14:30:00',2);
 
 -- Insert mock data into pingpong_sets
 INSERT INTO pingpong_sets (pingpong_match_id, round, score_A, score_B) VALUES
@@ -213,9 +215,9 @@ INSERT INTO pingpong_sets (pingpong_match_id, round, score_A, score_B) VALUES
 (1, 3, 11, 8);
 
 -- Insert mock data into badminton_matches
-INSERT INTO badminton_matches (type, team_A_id, team_B_id, locationId, time) VALUES
-('single_female', 1, 3, 1, '16:00:00'),
-('pair_male', 2, 4, 2, '17:30:00');
+INSERT INTO badminton_matches (type, team_A_id, team_B_id, locationId, time,teamId) VALUES
+('single_female', 1, 3, 1, '16:00:00',1),
+('pair_male', 2, 4, 2, '17:30:00',2);
 
 -- Insert mock data into badminton_sets
 INSERT INTO badminton_sets (badminton_match_id, round, score_A, score_B) VALUES

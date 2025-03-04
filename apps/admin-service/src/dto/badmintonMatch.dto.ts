@@ -15,6 +15,7 @@ export const updateBadmintonMatchDTO = Joi.object({
     team_A_id: Joi.number().integer().positive(),
     team_B_id: Joi.number().integer().positive(),
     time: Joi.string(),
+    teamId: Joi.number().integer().positive(),
     locationId: Joi.number().integer().positive(),
 });
 
