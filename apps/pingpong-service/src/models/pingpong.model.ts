@@ -7,7 +7,7 @@ export interface PingpongMatch{
   time: string;
   locationId: number;
   locationName: string;
-  pingpong_sets: PingpongSet;
+  pingpong_sets: PingpongSet[];
   team_A_details: UniversityDetail;
   team_B_details: UniversityDetail;
 }
