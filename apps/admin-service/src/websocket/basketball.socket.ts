@@ -16,4 +16,6 @@ export const setupWebSocket = (io: Server) => {
             console.log("Response from basketball service:", response.data);
         })
     })
+
+    console.log("Basketball socket setup complete");
 }
