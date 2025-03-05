@@ -8,7 +8,8 @@ version: '3.8'
 # 5. Football Service   (Port: 8084)
 # 6. Pingpong Service   (Port: 8085)
 # 7. Popcat Service     (Port: 8086)
-# 8. API Gateway        (Port: 8089)
+# 8. Point Service      (Port: 8087)
+# 9. API Gateway        (Port: 8089)
 
 services:
   api-gateway:
@@ -272,16 +273,16 @@ services:
       retries: 3
     networks:
       - it3k-2025-network
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    networks:
-      - it3k-2025-network
-    ports:
-      - '80:80'
-    restart: unless-stopped
-    volumes:
-      - ./config/it3k-2025.conf:/etc/nginx/nginx.conf
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx
+  #   networks:
+  #     - it3k-2025-network
+  #   ports:
+  #     - '80:80'
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./config/it3k-2025.conf:/etc/nginx/nginx.conf
 
 volumes:
   redis_data:
