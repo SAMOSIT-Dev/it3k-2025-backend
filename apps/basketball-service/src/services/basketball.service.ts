@@ -1,17 +1,58 @@
 import { Server } from 'socket.io';
 import { pool } from '../databases/database';
 import {
-  BasketballMatchRow,
-  Match,
+  ScoreBoardMatchRow,
+  OpeningMatchesMatchRow,
+  ScoreBoard,
   DashboardEntry,
+  Match,
+  
 } from '../models/basketball.model';
 import { getTotalScore } from '../utils/calculateScore';
 
-
-
-const fetchScoreboard = async (): Promise<Match[]> => {
+const fetchOpeningMatch = async (): Promise<Match[]> => {
   try {
-    const [rows] = await pool.execute<BasketballMatchRow[]>(`
+    const [rows] = await pool.execute<OpeningMatchesMatchRow[]>(`
+      SELECT bm.id, bm.status, bm.timeStart, bm.timeEnd,
+      ua.uniName AS team_A_name, ua.image AS team_A_image, ua.color_code AS team_A_color,
+      ub.uniName AS team_B_name, ub.image AS team_B_image, ub.color_code AS team_B_color
+      FROM Basketball_Match bm
+      JOIN University ua ON bm.team_A_id = ua.id
+      JOIN University ub ON bm.team_B_id = ub.id
+      WHERE bm.status = 'upcoming' OR bm.status = 'ongoing' OR fm.status = 'break'
+      ORDER BY bm.timeStart ASC
+
+    `);
+
+    return rows.map((match) => ({
+      id: match.id,
+      team_A: {
+        uniName: match.team_A_name,
+        image: match.team_A_image,
+        color_code: match.team_A_color,
+      },
+      team_B: {
+        uniName: match.team_B_name,
+        image: match.team_B_image,
+        color_code: match.team_B_color,
+      },
+      status: match.status,
+      timeStart: new Date(match.timeStart).toISOString(),
+      timeEnd: new Date(match.timeEnd).toISOString(),
+    }));
+
+  } catch (error) {
+    console.error('Error fetching opening match:', error);
+    return [];
+  }
+}
+
+
+
+
+const fetchScoreboard = async (): Promise<ScoreBoard[]> => {
+  try {
+    const [rows] = await pool.execute<ScoreBoardMatchRow[]>(`
       SELECT 
         bm.id, bm.status, bm.timeStart, bm.timeEnd,  
         bm.score_A_Q1, bm.score_A_Q2, bm.score_B_Q1, bm.score_B_Q2, 
@@ -63,7 +104,7 @@ const fetchScoreboard = async (): Promise<Match[]> => {
 
 const fetchDashboard = async (): Promise<DashboardEntry[]> => {
   try {
-    const [rows] = await pool.execute<BasketballMatchRow[]>(`
+    const [rows] = await pool.execute<ScoreBoardMatchRow[]>(`
       SELECT 
     ua.uniName AS university, 
     COALESCE(SUM(CASE 
@@ -133,10 +174,18 @@ const sendDashboard = async (io: Server) => {
   try {
     const dashboard = await fetchDashboard();
     io.emit('updateDashboard', dashboard);
-    console.log(dashboard)
   } catch (error) {
     console.error('Error sending dashboard:', error);
   }
 };
 
-export { fetchScoreboard, sendScoreboard, sendDashboard };
+const sendOpeningMatch = async (io: Server) => {
+  try {
+    const openingMatch = await fetchOpeningMatch();
+    io.emit('updateOpeningMatch', openingMatch);
+  } catch (error) {
+    console.error('Error sending openingMatch:', error);
+  }
+};
+
+export { fetchScoreboard, fetchDashboard, fetchOpeningMatch, sendScoreboard, sendDashboard , sendOpeningMatch};

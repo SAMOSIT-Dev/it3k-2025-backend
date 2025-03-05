@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
-import { sendScoreboard, sendDashboard  } from "../services/basketball.service";
+import { sendScoreboard, sendDashboard, sendOpeningMatch,  } from "../services/basketball.service";
 
-import { pool } from "../databases/database";
 
 export function setupSocket(io: Server) {
 
@@ -10,6 +9,7 @@ export function setupSocket(io: Server) {
 
     sendScoreboard(io);
     sendDashboard(io);
+    sendOpeningMatch(io);
     
     socket.on("disconnect", () => {
       console.log("Client disconnected:", socket.id);
