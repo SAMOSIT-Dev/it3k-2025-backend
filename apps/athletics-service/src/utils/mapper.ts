@@ -22,7 +22,7 @@ export const groupMatchesByEvent = (matches: any[]): GroupedMatch[] => {
             { id: match.team_A_id, uniName: match.team_A_name, image: match.team_A_image, colorCode: match.team_A_color, ranking: match.score_A },
             { id: match.team_B_id, uniName: match.team_B_name, image: match.team_B_image, colorCode: match.team_B_color, ranking: match.score_B },
             { id: match.team_C_id, uniName: match.team_C_name, image: match.team_C_image, colorCode: match.team_C_color, ranking: match.score_C },
-            { id: match.ranking, uniName: match.team_D_name, image: match.team_D_image, colorCode: match.team_D_color, ranking: match.score_D },
+            { id: match.team_D_id, uniName: match.team_D_name, image: match.team_D_image, colorCode: match.team_D_color, ranking: match.score_D },
         ];
 
         newTeams.forEach((team) => {
