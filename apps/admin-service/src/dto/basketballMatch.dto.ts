@@ -9,7 +9,7 @@ export const createBasketballDTO = Joi.object({
 
 export const updateBasketballMatchDTO = Joi.object({
     status: Joi.string()
-    .valid('upcoming','ongoing', 'break', 'finished'),
+        .valid('upcoming', 'ongoing', 'break', 'finished'),
     team_A_id: Joi.number().integer().positive(),
     team_B_id: Joi.number().integer().positive(),
     time: Joi.string(),
@@ -23,4 +23,5 @@ export const updateBasketballScoreDTO = Joi.object({
     score_B_Q2: Joi.number().integer(),
     score_A_OT: Joi.number().integer(),
     score_B_OT: Joi.number().integer(),
+    id: Joi.number().integer().positive().optional()
 })

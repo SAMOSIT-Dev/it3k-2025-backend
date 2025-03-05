@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
-import FootballService from '../services/football.service';
 import axios from 'axios';
+import BasketBallService from '../services/basketball.service';
 
 export const setupWebSocket = (io: Server) => {
 
@@ -10,10 +10,10 @@ export const setupWebSocket = (io: Server) => {
         socket.on('updateMatchScore', async (data) => {
             console.log('Received updated score:', data);
 
-            await FootballService.updateFootballScore(data);
+            await BasketBallService.updateBasketballScore(data);
 
-            const response = await axios.get('http://football-service:8084/api/football/matches/revalidate');
-            console.log("Response from football service:", response.data);
+            const response = await axios.get('http://football-service:8084/api/basketball/matches/revalidate');
+            console.log("Response from basketball service:", response.data);
         })
     })
 }

@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { setupSocket } from "../sockets/football.sockets";
 import healthRoute from '../routes/health.route';
-import footballRoutes from '../routes/football.route';
+import createFootballRouter from "../routes/football.route";
 
 const app = express();
 const server = http.createServer(app);
@@ -16,7 +16,7 @@ const io = new Server(server, {
 });
 
 app.use('/', healthRoute);
-app.use('/api/football', footballRoutes);
+app.use('/api/football', createFootballRouter(io));
 
 setupSocket(io);
 
