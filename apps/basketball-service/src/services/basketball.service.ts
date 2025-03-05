@@ -7,6 +7,8 @@ import {
 } from '../models/basketball.model';
 import { getTotalScore } from '../utils/calculateScore';
 
+
+
 const fetchScoreboard = async (): Promise<Match[]> => {
   try {
     const [rows] = await pool.execute<BasketballMatchRow[]>(`
@@ -64,30 +66,40 @@ const fetchDashboard = async (): Promise<DashboardEntry[]> => {
     const [rows] = await pool.execute<BasketballMatchRow[]>(`
       SELECT 
     ua.uniName AS university, 
-    SUM(CASE WHEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT > bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1 ELSE 0 END) AS wins,
-    SUM(CASE WHEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT < bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1 ELSE 0 END) AS losses,
-    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS totalPointsScored,
-    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS totalPointsConceded,
-    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) - SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS pointDiff
-FROM Basketball_Match bm
-JOIN University ua ON bm.team_A_id = ua.id
-WHERE bm.status = 'finished'
+    COALESCE(SUM(CASE 
+        WHEN bm.team_A_id = ua.id AND bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT > bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1
+        WHEN bm.team_B_id = ua.id AND bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT > bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1
+        ELSE 0
+    END), 0) AS wins,
+
+    COALESCE(SUM(CASE 
+        WHEN bm.team_A_id = ua.id AND bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT < bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1
+        WHEN bm.team_B_id = ua.id AND bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT < bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1
+        ELSE 0
+    END), 0) AS losses,
+
+    COALESCE(SUM(CASE 
+        WHEN bm.team_A_id = ua.id THEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT
+        WHEN bm.team_B_id = ua.id THEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT
+        ELSE 0
+    END), 0) AS totalPointsScored,
+
+    COALESCE(SUM(CASE 
+        WHEN bm.team_A_id = ua.id THEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT
+        WHEN bm.team_B_id = ua.id THEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT
+        ELSE 0
+    END), 0) AS totalPointsConceded,
+
+    COALESCE(SUM(CASE 
+        WHEN bm.team_A_id = ua.id THEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT - (bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT)
+        WHEN bm.team_B_id = ua.id THEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT - (bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT)
+        ELSE 0
+    END), 0) AS pointDiff
+FROM University ua
+LEFT JOIN Basketball_Match bm 
+    ON (bm.team_A_id = ua.id OR bm.team_B_id = ua.id)
+    AND bm.status = 'finished'
 GROUP BY ua.uniName
-
-UNION ALL
-
-SELECT 
-    ub.uniName AS university, 
-    SUM(CASE WHEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT > bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1 ELSE 0 END) AS wins,
-    SUM(CASE WHEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT < bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1 ELSE 0 END) AS losses,
-    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS totalPointsScored,
-    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS totalPointsConceded,
-    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) - SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS pointDiff
-FROM Basketball_Match bm
-JOIN University ub ON bm.team_B_id = ub.id
-WHERE bm.status = 'finished'
-GROUP BY ub.uniName
-
 ORDER BY wins DESC, pointDiff DESC;
     `);
 
@@ -121,6 +133,7 @@ const sendDashboard = async (io: Server) => {
   try {
     const dashboard = await fetchDashboard();
     io.emit('updateDashboard', dashboard);
+    console.log(dashboard)
   } catch (error) {
     console.error('Error sending dashboard:', error);
   }
