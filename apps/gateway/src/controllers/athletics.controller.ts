@@ -39,7 +39,7 @@ export const getAllMatches = async (_req: Request, res: Response): Promise<void>
 export const getMatchByEvent = async (req: Request, res: Response): Promise<void> => {
     const { event } = req.params;
     try {
-        const response = await axios.get(`${athleticsServiceURL}/api/athletics/${event}`);
+        const response = await axios.get(`${athleticsServiceURL}/api/athletics/event/${event}`);
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
