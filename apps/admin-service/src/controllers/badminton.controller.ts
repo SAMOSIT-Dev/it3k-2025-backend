@@ -21,7 +21,12 @@ export const createBadmintonMatch = async (req: Request, res: Response) => {
             data: { id: result.insertId, type, team_A_id, team_B_id, time, locationId },
         });
     } catch (error) {
-        console.error('Error creating match:', error);
+        console.log('Database error details:', {
+            message: error.message,
+            code: error.code,
+            sqlState: error.sqlState,
+            sql: error.sql
+        });
         res.status(500).json({ success: false, message: 'Error creating match' });
     }
 };

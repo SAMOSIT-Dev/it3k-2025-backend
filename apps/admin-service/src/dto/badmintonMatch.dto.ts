@@ -7,8 +7,8 @@ export const createBadmintonMatchDTO = Joi.object({
     team_A_id: Joi.number().integer().positive().required(),
     team_B_id: Joi.number().integer().positive().required(),
     time: Joi.string().required(),
-    team_A_number: Joi.number().integer().positive(),
-    team_B_number: Joi.number().integer().positive(),
+    team_A_number: Joi.number().integer().positive().required(),
+    team_B_number: Joi.number().integer().positive().required(),
     locationId: Joi.number().integer().positive().required(),
 });
 
