@@ -1,4 +1,5 @@
 export interface PingpongMatch{
+  matchId: number;
   id: number;
   type: PingpongType;
   team_A_id: number;

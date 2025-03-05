@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { createProxyMiddleware, Options } from 'http-proxy-middleware';
+import {isBasketballAdmin} from '@it3k-2025-backend/middleware';
 
 const router: Router = Router();
 
@@ -15,6 +16,6 @@ const basketballSocketProxyOptions: Options = {
 
 const basketballSocketProxy = createProxyMiddleware(basketballSocketProxyOptions);
 
-router.use('/socket', basketballSocketProxy);
+router.use('/socket', isBasketballAdmin, basketballSocketProxy);
 
 export default router;

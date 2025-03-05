@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@it3k-2025-backend/shared": ["libs/shared/src/index.ts"]
+      "@it3k-2025-backend/shared": ["libs/shared/src/index.ts"],
+      "@it3k-2025-backend/middleware": ["libs/shared/src/middleware.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

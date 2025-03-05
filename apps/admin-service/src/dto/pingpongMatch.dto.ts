@@ -7,6 +7,8 @@ export const createPingPongMatchDTO = Joi.object({
     team_A_id: Joi.number().integer().positive().required(),
     team_B_id: Joi.number().integer().positive().required(),
     time: Joi.string().required(),
+    team_A_number: Joi.number().integer().positive(),
+    team_B_number: Joi.number().integer().positive(),
     locationId: Joi.number().integer().positive().required(),
 });
 
@@ -15,6 +17,8 @@ export const updatePingPongMatchDTO = Joi.object({
     team_A_id: Joi.number().integer().positive(),
     team_B_id: Joi.number().integer().positive(),
     time: Joi.string(),
+    team_A_number: Joi.number().integer().positive(),
+    team_B_number: Joi.number().integer().positive(),
     locationId: Joi.number().integer().positive(),
 });
 

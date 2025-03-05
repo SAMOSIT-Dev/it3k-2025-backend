@@ -10,10 +10,10 @@ export const createBadmintonMatch = async (req: Request, res: Response) => {
             return res.status(400).json({ success: false, message: error.details[0].message });
         }
 
-        const { type, team_A_id, team_B_id, time, locationId } = req.body;
+        const { type, team_A_id, team_B_id, time, locationId, team_A_number, team_B_number } = req.body;
 
-        const query = `INSERT INTO badminton_matches (type, team_A_id, team_B_id, time, locationId) VALUES (?, ?, ?, ?, ?)`;
-        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId]);
+        const query = `INSERT INTO badminton_matches (type, team_A_id, team_B_id, time, locationId, team_A_number, team_B_number) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId, team_A_number, team_B_number]);
 
         res.status(201).json({
             success: true,
@@ -57,10 +57,10 @@ export const updateBadmintonMatch = async (req: Request, res: Response) => {
         }
 
         const { id } = req.params;
-        const { type, team_A_id, team_B_id, time, locationId } = req.body;
+        const { type, team_A_id, team_B_id, time, locationId, team_A_number, team_B_number } = req.body;
 
-        const query = `UPDATE badminton_matches SET type = ?, team_A_id = ?, team_B_id = ?, time = ?, locationId = ? WHERE id = ?`;
-        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId, id]);
+        const query = `UPDATE badminton_matches SET type = ?, team_A_id = ?, team_B_id = ?, time = ?, locationId = ?, team_A_number = ?, team_B_number = ? WHERE id = ?`;
+        const [result] = await pool.query<ResultSetHeader>(query, [type, team_A_id, team_B_id, time, locationId, team_A_number, team_B_number, id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'Match not found' });

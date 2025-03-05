@@ -19,6 +19,6 @@ RUN npm install -g nx
 COPY apps ./apps
 COPY libs ./libs
 
-EXPOSE 8081
+EXPOSE 8080
 
 CMD ["npx", "nx", "serve-dev", "admin-service", "--configuration=docker"]

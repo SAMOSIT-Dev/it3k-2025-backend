@@ -21,3 +21,4 @@ export const formatTime = (start?: string, end?: string): string => {
     const formattedTime = `${format(start)} - ${format(end)}`;
     return formattedTime;
   };
+
