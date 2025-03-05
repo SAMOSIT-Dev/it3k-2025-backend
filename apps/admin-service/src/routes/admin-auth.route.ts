@@ -5,7 +5,7 @@ import {
     logoutAdmin 
 } from '../controllers/admin-auth.controller';
 
-const router = Router();
+const   router = Router();
 
 router.post('/login', loginAdmin);
 router.post('/refresh-token', refreshAccessToken);
