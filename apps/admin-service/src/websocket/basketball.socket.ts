@@ -12,7 +12,7 @@ export const setupWebSocket = (io: Server) => {
 
             await BasketBallService.updateBasketballScore(data);
 
-            const response = await axios.get('http://football-service:8084/api/basketball/matches/revalidate');
+            const response = await axios.get('http://basketball-service:8083/api/basketball/matches/revalidate');
             console.log("Response from basketball service:", response.data);
         })
     })

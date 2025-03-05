@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { Server } from 'socket.io';
-import { sendScoreboard } from '../services/basketball.service';
+import { sendDashboard, sendScoreboard } from '../services/basketball.service';
 
 const createBasketBallRouter = (io: Server) => {
   const router = Router();
@@ -8,6 +8,7 @@ const createBasketBallRouter = (io: Server) => {
   router.get('/matches/revalidate', async (_req: Request, res: Response) => {
     try {
       await sendScoreboard(io);
+      await sendDashboard(io);
       res.json({
         success: true,
         message: "Basketball match fetched successfully",
