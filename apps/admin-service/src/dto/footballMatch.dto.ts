@@ -10,12 +10,13 @@ export const createFootballDTO = Joi.object({
 
 export const updateFootballDTO = Joi.object({
     status: Joi.string()
-    .valid('upcoming','ongoing', 'break', 'finished'),
+        .valid('upcoming', 'ongoing', 'break', 'finished'),
     team_A_id: Joi.number().integer().positive(),
     team_B_id: Joi.number().integer().positive(),
     timeStart: Joi.string(),
     timeEnd: Joi.string(),
     locationId: Joi.number().integer().positive(),
+    id: Joi.number().integer().positive().optional()
 });
 
 export const updateFootballScoreDTO = Joi.object({

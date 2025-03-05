@@ -18,7 +18,7 @@ export const createFootballMatch = async (req: Request, res: Response) => {
             data: { id: result.insertId, team_A_id, team_B_id, timeStart, timeEnd, locationId, },
         });
 
-        
+
     } catch (error) {
         console.error('Error creating football match:', error);
         res.status(500).json({ success: false, message: 'Error creating football match' });
@@ -39,7 +39,7 @@ export const updateFootballMatch = async (req: Request, res: Response) => {
             return res.status(404).json({ success: false, message: 'Football match not found' });
         }
         res.status(200).json({ success: true, message: 'Football match updated successfully' });
-        
+
     } catch (error) {
         console.error('Error updating football match:', error);
         res.status(500).json({ success: false, message: 'Error updating football match' });
