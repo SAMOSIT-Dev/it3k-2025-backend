@@ -202,7 +202,7 @@ INSERT INTO football_matches (team_A_id, team_B_id, status, timeStart, timeEnd, 
 (2, 3, 'finished', '2025-03-01 15:00:00', '2025-03-01 17:00:00', 3, 3, 1);
 
 -- Insert mock data into basketball_matches
-INSERT INTO Basketball_Match (team_A_id, team_B_id, status, timeStart, timeEnd, locationId, score_A_Q1, score_A_Q2, score_B_Q1, score_B_Q2, score_A_OT, score_B_OT) VALUES
+INSERT INTO basketball_matches (team_A_id, team_B_id, status, timeStart, timeEnd, locationId, score_A_Q1, score_A_Q2, score_B_Q1, score_B_Q2, score_A_OT, score_B_OT) VALUES
 (1, 3, 'finished', '2025-03-9 09:00:00', '2025-02-9 09:25:00', 1, 32, 3, 12, 2, 1, 2),
 (4, 2, 'ongoing', '2025-03-9 09:35:00', '2025-02-9 10:00:00', 1, 32, 21, 31, 4, 2, 0),
 (1, 2, 'upcoming', '2025-03-9 10:10:00', '2025-02-9 10:35:00', 1, 0, 0, 0, 0, 0, 0),
