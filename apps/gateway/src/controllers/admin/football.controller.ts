@@ -4,7 +4,11 @@ import adminServiceURL from "./base_url";
 
 export const createFootballlMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/football`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/football`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -20,7 +24,11 @@ export const createFootballlMatch = async (req: Request, res: Response): Promise
 export const updateFootballMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/football/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/football/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -36,7 +44,11 @@ export const updateFootballMatch = async (req: Request, res: Response): Promise<
 export const updateFootballScore = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/football/score/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/football/score/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -52,7 +64,11 @@ export const updateFootballScore = async (req: Request, res: Response): Promise<
 export const deleteFootballlMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.delete(`${adminServiceURL}/api/admin/football/${id}`, req.body);
+        const response = await axios.delete(`${adminServiceURL}/api/admin/football/${id}`, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);

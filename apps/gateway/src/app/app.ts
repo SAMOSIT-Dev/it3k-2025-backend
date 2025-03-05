@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express from 'express';
 import athleticsRouter from '../routes/athletics.route'
 import badmintonRouter from '../routes/badminton.route'
 import pingpongRouter from '../routes/pingpong.route'
@@ -14,9 +14,10 @@ import adminFootballRouter from '../routes/admin/football.route'
 import adminPingpongRouter from '../routes/admin/pingpong.route'
 import adminBadmintonRouter from '../routes/admin/badminton.route'
 import adminAthleticsRouter from '../routes/admin/athletics.route'
-import e from 'express';
+
 
 const app = express();
+app.use(express.json());
 app.use('/athletics', athleticsRouter);
 app.use('/badminton', badmintonRouter);
 app.use('/basketball', basketballSocketProxyRoutes);
@@ -28,7 +29,6 @@ app.use('/schedule', scheduleRouter);
 app.use('/points', pointRouter);
 
 // Admin 
-app.use(express.json());
 app.use('/admin/auth', authRouter);
 app.use('/admin/basketball', adminBasketballRouter);
 app.use('/admin/football', adminFootballRouter);

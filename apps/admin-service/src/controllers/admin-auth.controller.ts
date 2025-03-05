@@ -26,7 +26,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
         const accessToken = jwt.sign(
             payload, 
             process.env.JWT_SECRET || 'it3k-2025-secret', 
-            { expiresIn: '3h' }
+            { expiresIn: '12h' }
         );
 
         const refreshToken = jwt.sign(
@@ -98,7 +98,7 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
             const accessToken = jwt.sign(
                 payload,
                 process.env.JWT_SECRET || 'it3k-2025-secret',
-                { expiresIn: '3h' }
+                { expiresIn: '12h' }
             );
 
             return res.status(200).json({ accessToken });

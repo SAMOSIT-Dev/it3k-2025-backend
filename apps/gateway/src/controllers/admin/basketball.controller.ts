@@ -4,7 +4,11 @@ import adminServiceURL from "./base_url";
 
 export const createBasketballMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/basketball`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/basketball`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -20,7 +24,11 @@ export const createBasketballMatch = async (req: Request, res: Response): Promis
 export const updateBasketballMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/basketball/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/basketball/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -36,7 +44,11 @@ export const updateBasketballMatch = async (req: Request, res: Response): Promis
 export const updateBasketballScore = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/basketball/score/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/basketball/score/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -52,7 +64,11 @@ export const updateBasketballScore = async (req: Request, res: Response): Promis
 export const deleteBasketballMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.delete(`${adminServiceURL}/api/admin/basketball/${id}`, req.body);
+        const response = await axios.delete(`${adminServiceURL}/api/admin/basketball/${id}` , {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);

@@ -4,7 +4,11 @@ import adminServiceURL from "./base_url";
 
 export const createPingpongMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/pingpong/matches`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/pingpong/matches`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -20,7 +24,11 @@ export const createPingpongMatch = async (req: Request, res: Response): Promise<
 export const updatePingpongMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/pingpong/matches/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/pingpong/matches/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -35,7 +43,11 @@ export const updatePingpongMatch = async (req: Request, res: Response): Promise<
 
 export const createPingpongSet = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/pingpong/sets`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/pingpong/sets`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -51,7 +63,11 @@ export const createPingpongSet = async (req: Request, res: Response): Promise<vo
 export const updatePingpongSet = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/pingpong/sets/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/pingpong/sets/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);

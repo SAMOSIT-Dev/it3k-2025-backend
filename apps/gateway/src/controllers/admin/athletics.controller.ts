@@ -4,7 +4,11 @@ import adminServiceURL from "./base_url";
 
 export const createAthleticsMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/athletics`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/athletics`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -20,7 +24,11 @@ export const createAthleticsMatch = async (req: Request, res: Response): Promise
 export const updateAthleticsMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/athletics/${id}`, req.body);
+        const response = await axios.put(`${adminServiceURL}/api/admin/athletics/${id}`, req.body, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -36,7 +44,11 @@ export const updateAthleticsMatch = async (req: Request, res: Response): Promise
 export const deleteAthleticsMatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const {id} = req.params;
-        const response = await axios.delete(`${adminServiceURL}/api/admin/athletics/${id}`, req.body);
+        const response = await axios.delete(`${adminServiceURL}/api/admin/athletics/${id}`, {
+            headers : {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);

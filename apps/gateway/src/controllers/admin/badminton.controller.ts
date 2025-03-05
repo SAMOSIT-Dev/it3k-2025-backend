@@ -4,7 +4,11 @@ import adminServiceURL from "./base_url";
 
 export const createBadmintonMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/badminton/matches`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/badminton/matches`, req.body, {
+            headers: {
+                Authorization: req.headers.authorization,
+            }
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -19,8 +23,12 @@ export const createBadmintonMatch = async (req: Request, res: Response): Promise
 
 export const updateBadmintonMatch = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/badminton/matches/${id}`, req.body);
+        const { id } = req.params;
+        const response = await axios.put(`${adminServiceURL}/api/admin/badminton/matches/${id}`, req.body, {
+            headers: {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
@@ -35,7 +43,11 @@ export const updateBadmintonMatch = async (req: Request, res: Response): Promise
 
 export const createBadmintonSet = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await axios.post(`${adminServiceURL}/api/admin/badminton/sets`, req.body);
+        const response = await axios.post(`${adminServiceURL}/api/admin/badminton/sets`, req.body, {
+            headers: {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(201).json(response.data);
     } catch (error) {
         console.log(error);
@@ -50,8 +62,12 @@ export const createBadmintonSet = async (req: Request, res: Response): Promise<v
 
 export const updateBadmintonSet = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {id} = req.params;
-        const response = await axios.put(`${adminServiceURL}/api/admin/badminton/sets/${id}`, req.body);
+        const { id } = req.params;
+        const response = await axios.put(`${adminServiceURL}/api/admin/badminton/sets/${id}`, req.body, {
+            headers: {
+                Authorization: req.headers.authorization,
+            },
+        });
         res.status(200).json(response.data);
     } catch (error) {
         console.log(error);
