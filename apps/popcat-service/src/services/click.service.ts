@@ -19,6 +19,11 @@ export class ClickService {
             return;
         }
 
+        if (data.clicks !== 1) {
+            socket.emit('error', 'Invalid click value. Each click must count as 1.');
+            return;
+        }
+
         const now = Date.now();
         const userClicks = clickLimits.get(socket.id) || { count: 0, lastReset: now };
 
@@ -29,7 +34,7 @@ export class ClickService {
 
         userClicks.count += data.clicks;
 
-        if (userClicks.count > 100) {
+        if (userClicks.count > 20) {
             socket.emit('error', 'Too many clicks! Max 100 clicks per second allowed.');
             return;
         }
