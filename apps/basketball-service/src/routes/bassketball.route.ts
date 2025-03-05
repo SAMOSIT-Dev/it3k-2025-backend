@@ -10,7 +10,7 @@ const createBasketBallRouter = (io: Server) => {
       await sendScoreboard(io);
       res.json({
         success: true,
-        message: "Football match fetched successfully",
+        message: "Basketball match fetched successfully",
         data: []
       });
     } catch (error) {

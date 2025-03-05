@@ -1,6 +1,10 @@
 import { Server } from 'socket.io';
 import { pool } from '../databases/database';
-import { BasketballMatchRow, Match } from '../models/basketball.model';
+import {
+  BasketballMatchRow,
+  Match,
+  DashboardEntry,
+} from '../models/basketball.model';
 import { getTotalScore } from '../utils/calculateScore';
 
 const fetchScoreboard = async (): Promise<Match[]> => {
@@ -55,6 +59,55 @@ const fetchScoreboard = async (): Promise<Match[]> => {
   }
 };
 
+const fetchDashboard = async (): Promise<DashboardEntry[]> => {
+  try {
+    const [rows] = await pool.execute<BasketballMatchRow[]>(`
+      SELECT 
+    ua.uniName AS university, 
+    SUM(CASE WHEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT > bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1 ELSE 0 END) AS wins,
+    SUM(CASE WHEN bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT < bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT THEN 1 ELSE 0 END) AS losses,
+    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS totalPointsScored,
+    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS totalPointsConceded,
+    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) - SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS pointDiff
+FROM Basketball_Match bm
+JOIN University ua ON bm.team_A_id = ua.id
+WHERE bm.status = 'finished'
+GROUP BY ua.uniName
+
+UNION ALL
+
+SELECT 
+    ub.uniName AS university, 
+    SUM(CASE WHEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT > bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1 ELSE 0 END) AS wins,
+    SUM(CASE WHEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT < bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT THEN 1 ELSE 0 END) AS losses,
+    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) AS totalPointsScored,
+    SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS totalPointsConceded,
+    SUM(bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT) - SUM(bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT) AS pointDiff
+FROM Basketball_Match bm
+JOIN University ub ON bm.team_B_id = ub.id
+WHERE bm.status = 'finished'
+GROUP BY ub.uniName
+
+ORDER BY wins DESC, pointDiff DESC;
+    `);
+
+    const processedData = rows.map((entry, index) => ({
+      rank: index + 1,
+      university: entry.university,
+      wins: entry.wins,
+      losses: entry.losses,
+      totalPointsScored: entry.totalPointsScored,
+      totalPointsConceded: entry.totalPointsConceded,
+      pointDiff: entry.totalPointsScored - entry.totalPointsConceded,
+    }));
+
+    return processedData;
+  } catch (error) {
+    console.error('Error fetching dashboard:', error);
+    return [];
+  }
+};
+
 const sendScoreboard = async (io: Server) => {
   try {
     const scoreboard = await fetchScoreboard();
@@ -64,4 +117,13 @@ const sendScoreboard = async (io: Server) => {
   }
 };
 
-export { fetchScoreboard, sendScoreboard };
+const sendDashboard = async (io: Server) => {
+  try {
+    const dashboard = await fetchDashboard();
+    io.emit('updateDashboard', dashboard);
+  } catch (error) {
+    console.error('Error sending dashboard:', error);
+  }
+};
+
+export { fetchScoreboard, sendScoreboard, sendDashboard };
