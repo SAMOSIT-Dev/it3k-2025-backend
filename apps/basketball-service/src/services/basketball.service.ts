@@ -16,10 +16,10 @@ const fetchOpeningMatch = async (): Promise<Match[]> => {
       SELECT bm.id, bm.status, bm.timeStart, bm.timeEnd,
       ua.uniName AS team_A_name, ua.image AS team_A_image, ua.color_code AS team_A_color,
       ub.uniName AS team_B_name, ub.image AS team_B_image, ub.color_code AS team_B_color
-      FROM Basketball_Match bm
-      JOIN University ua ON bm.team_A_id = ua.id
-      JOIN University ub ON bm.team_B_id = ub.id
-      WHERE bm.status = 'upcoming' OR bm.status = 'ongoing' OR fm.status = 'break'
+      FROM basketball_matches bm
+      JOIN universities ua ON bm.team_A_id = ua.id
+      JOIN universities ub ON bm.team_B_id = ub.id
+      WHERE bm.status = 'upcoming' OR bm.status = 'ongoing' OR bm.status = 'break'
       ORDER BY bm.timeStart ASC
 
     `);
@@ -59,9 +59,9 @@ const fetchScoreboard = async (): Promise<ScoreBoard[]> => {
         bm.score_A_OT, bm.score_B_OT,
         ua.uniName AS team_A_uniName, ua.image AS team_A_image, ua.color_code AS team_A_color,
         ub.uniName AS team_B_uniName, ub.image AS team_B_image, ub.color_code AS team_B_color
-      FROM Basketball_Match bm
-      JOIN University ua ON bm.team_A_id = ua.id
-      JOIN University ub ON bm.team_B_id = ub.id
+      FROM basketball_matches bm
+      JOIN universities ua ON bm.team_A_id = ua.id
+      JOIN universities ub ON bm.team_B_id = ub.id
     `);
 
     return rows.map((match) => ({
@@ -136,8 +136,8 @@ const fetchDashboard = async (): Promise<DashboardEntry[]> => {
         WHEN bm.team_B_id = ua.id THEN bm.score_B_Q1 + bm.score_B_Q2 + bm.score_B_OT - (bm.score_A_Q1 + bm.score_A_Q2 + bm.score_A_OT)
         ELSE 0
     END), 0) AS pointDiff
-FROM University ua
-LEFT JOIN Basketball_Match bm 
+FROM universities ua
+LEFT JOIN basketball_matches bm 
     ON (bm.team_A_id = ua.id OR bm.team_B_id = ua.id)
     AND bm.status = 'finished'
 GROUP BY ua.uniName
@@ -183,6 +183,7 @@ const sendOpeningMatch = async (io: Server) => {
   try {
     const openingMatch = await fetchOpeningMatch();
     io.emit('updateOpeningMatch', openingMatch);
+    console.log('Opening Match:', openingMatch);
   } catch (error) {
     console.error('Error sending openingMatch:', error);
   }
