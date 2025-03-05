@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { sendScoreboard  } from "../services/basketball.service";
+import { sendScoreboard, sendDashboard  } from "../services/basketball.service";
 
 import { pool } from "../databases/database";
 
@@ -9,7 +9,7 @@ export function setupSocket(io: Server) {
     console.log("Client connected:", socket.id);
 
     sendScoreboard(io);
-
+    sendDashboard(io);
     socket.on("updateMatchScore", async (updatedData) => {
       console.log("Received updated score:", updatedData);
 
@@ -28,7 +28,7 @@ export function setupSocket(io: Server) {
 
         console.log(`Match ${updatedData.id} updated successfully!`);
         sendScoreboard(io);
-
+        sendDashboard(io);
       } catch (error) {
         console.error("Error updating match score:", error);
       }

@@ -53,3 +53,13 @@ export interface Match {
   timeStart: string;
   timeEnd: string;
 };
+
+export interface DashboardEntry {
+  rank: number;
+  university: string;
+  wins: number;
+  losses: number;
+  totalPointsScored: number;
+  totalPointsConceded: number;
+  pointDiff: number;
+}
